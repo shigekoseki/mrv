@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/modern.css" rel="stylesheet">
+    <link href="css/modern-responsive.css" rel="stylesheet">
+
+    <script src="js/jquery-1.8.2.min.js" type="text/javascript"></script>
+    <script src="js/jquery.mousewheel.min.js" type="text/javascript"></script>
+
+    <script src="js/metroui/tile-slider.js" type="text/javascript"></script>
+    <script src="js/metroui/start-menu.js" type="text/javascript"></script>
+    <script src="js/metroui/slider.js" type="text/javascript"></script>
+    <script src="js/metroui/buttonset.js" type="text/javascript"></script>
+
+    <script src="js/hc/highcharts.js" type="text/javascript"></script>
+    <script src="js/hc/highcharts-more.js" type="text/javascript"></script>
+
+    <script src="js/mrv/CultureMediumChart.js" type="text/javascript"></script>
+    <script src="js/mrv/TempBar.js" type="text/javascript"></script>
+    <script src="js/mrv/SqrtModel.js" type="text/javascript"></script>
+    <script src="js/mrv/PolynomialModel.js" type="text/javascript"></script>
+    <script src="js/mrv/common.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.ontouchmove = function (event) {
+                //event.preventDefault();
+            }
+            document.onorientationchange = function (event) {
+                event.preventDefault();
+            }
+            moveTo("baclst");
+        });
+    </script>
+</head>
+<body class="metrouicss">
+
+<div class="page secondary fixed-header">
+
+	<div class="page-header" style="background-color:purple;">
+            <div id="header-content" class="page-header-content">
+            </div>
+    </div>
+
+	<div id="main-content" class="page-region">
+    </div>
+</div>
+
+</body>
+</html>
