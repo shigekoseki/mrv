@@ -1,42 +1,40 @@
-﻿
-            <div class="page-region-content tiles">
+﻿    <div class="page-region-content tiles">
 		<div class="tile-group">
 		<h2>Food</h2>
+		<a class="tile double image" href="#" data-food='culture_medium'>
+            <div class="tile-content">
+                <img src="images/icons/culturemedium.jpg" />
+            </div>
+            <div class="brand bg-color-orange">
+                <span class="name">Culture Medium</span>
+            </div>
+        </a>
 
-		<a class="tile double image" href="#" onclick="moveTo('cmmodel')">
-                    <div class="tile-content">
-                        <img src="images/icons/culturemedium.jpg" />
-                    </div>
-                    <div class="brand bg-color-orange">
-                        <span class="name">Culture Medium</span>
-                    </div>
-                </a>
+		<a class="tile image" data-food='beef' onclick="moveTo('foodmodel')">
+            <div class="tile-content">
+                <img src="images/icons/beef.jpg" />
+            </div>
+            <div class="brand bg-color-orange">
+                <span class="name">Beef</span>
+            </div>
+        </a>
 
-		<a class="tile image" onclick="moveTo('foodmodel')">
-                    <div class="tile-content">
-                        <img src="images/icons/beef.jpg" />
-                    </div>
-                    <div class="brand bg-color-orange">
-                        <span class="name">Beef</span>
-                    </div>
-                </a>
+		<a class="tile image" data-food='pork' onclick="moveTo('foodmodel')">
+            <div class="tile-content">
+                <img src="images/icons/pork.jpg" />
+            </div>
+            <div class="brand bg-color-orange">
+                <span class="name">Pork</span>
+            </div>
+        </a>
 
-		<a class="tile image" onclick="moveTo('foodmodel')">
-                    <div class="tile-content">
-                        <img src="images/icons/pork.jpg" />
-                    </div>
-                    <div class="brand bg-color-orange">
-                        <span class="name">Pork</span>
-                    </div>
-                </a>
-
-		<a class="tile" onclick="moveTo('foodmodel')">
-                    <div class="tile-content">
-                    </div>
-                    <div class="brand bg-color-orange">
-                        <span class="name">Chicken</span>
-                    </div>
-                </a>
+		<a class="tile" data-food='chicken' onclick="moveTo('foodmodel')">
+            <div class="tile-content">
+            </div>
+            <div class="brand bg-color-orange">
+                <span class="name">Chicken</span>
+            </div>
+        </a>
 
         <!--
 		<a class="tile" onclick="moveTo('foodmodel')">
@@ -126,7 +124,7 @@
 
 		<h2>Additives</h2>
 
-		<a class="tile image" onclick="moveTo('additivemodel')">
+		<a class="tile image" data-additive='lactic'>
                     <div class="tile-content">
                         <img src="images/icons/527px-Racemic_lactic_acid_sample.jpg" />
                     </div>
@@ -134,7 +132,7 @@
                         <span class="name">Lactic Acid</span>
                     </div>
                 </a>
-		<a class="tile image" onclick="moveTo('additivemodel')">
+		<a class="tile image" data-additive='sorbic'>
                     <div class="tile-content">
                         <img src="images/icons/800px-Sorbic-acid-3D-balls-B.png" />
                     </div>
@@ -143,7 +141,7 @@
                     </div>
                 </a>
 
-		<a class="tile image" onclick="moveTo('additivemodel')">
+		<a class="tile image" data-additive='citric'>
                     <div class="tile-content">
                         <img src="images/icons/320px-Citric-acid-3D-balls.png" />
                     </div>
@@ -152,7 +150,7 @@
                     </div>
                 </a>
 
-		<a class="tile image" onclick="moveTo('additivemodel')">
+		<a class="tile image" data-additive='acetic'>
                     <div class="tile-content">
                         <img src="images/icons/Acetic_acid.jpg" />
                     </div>
@@ -161,7 +159,7 @@
                     </div>
                 </a>
 
-		<a class="tile image" onclick="moveTo('additivemodel')">
+		<a class="tile image" data-additive='nitrite'>
                     <div class="tile-content">
                         <img src="images/icons/305px-Nitrite-3D-vdW.png" />
                     </div>
@@ -170,7 +168,7 @@
                     </div>
                 </a>
 
-		<a class="tile image" onclick="moveTo('additivemodel')">
+		<a class="tile image" data-additive='propionic'>
                     <div class="tile-content">
                         <img src="images/icons/320px-Propionic-acid-3D-balls.png" />
                     </div>
@@ -179,7 +177,7 @@
                     </div>
                 </a>
 
-		<a class="tile image" onclick="moveTo('additivemodel')">
+		<a class="tile image" data-additive='ascorbic'>
                     <div class="tile-content">
                         <img src="images/icons/Sample_of_ascorbic_acid.jpg" />
                     </div>
@@ -188,7 +186,7 @@
                     </div>
                 </a>
 
-		<a class="tile image" onclick="moveTo('additivemodel')">
+		<a class="tile image" data-additive='glucose'>
                     <div class="tile-content">
                         <img src="images/icons/320px-D-glucose-chain-3D-balls.png" />
                     </div>
@@ -197,7 +195,7 @@
                     </div>
                 </a>
 
-		<a class="tile image" onclick="moveTo('additivemodel')">
+		<a class="tile image" data-additive='nacl'>
                     <div class="tile-content">
                         <img src="images/icons/Halit-Kristalle.jpg" />
                     </div>
