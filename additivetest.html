@@ -17,6 +17,7 @@
     <script src="js/hc/highcharts-more.js" type="text/javascript"></script>
 
     <script src="js/mrv/CultureMediumChart.js" type="text/javascript"></script>
+    <script src="js/mrv/AdditiveChart.js" type="text/javascript"></script>
     <script src="js/mrv/AdditivePPMChart.js" type="text/javascript"></script>
     <script src="js/mrv/TempBar.js" type="text/javascript"></script>
     <script src="js/mrv/SqrtModel.js" type="text/javascript"></script>
@@ -31,7 +32,10 @@
             document.onorientationchange = function (event) {
                 event.preventDefault();
             }
-            moveTo("additivetest");
+            Status.Organism = Master.findOrganism('Ah');
+            Status.Additive = Master.findAdditive('lactic');
+            Status.Cons = 500;
+            moveTo("additivemodel");
         });
     </script>
 </head>

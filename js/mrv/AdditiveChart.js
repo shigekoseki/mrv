@@ -5,7 +5,6 @@ var CMAxis_pH = 3;
 var AdditiveChart = function (arg) {
     if (arg != undefined) {
         this.organismKey = arg.organismKey;
-        this.model = arg.model;
         this.axisx = arg.axisx;
         this.axisy = arg.axisy;
         this.constValue = arg.constValue;
@@ -14,7 +13,6 @@ var AdditiveChart = function (arg) {
 };
 
 AdditiveChart.prototype = {
-    model: undefined,
     axisx: CMAxis_Temp,
     axisy: CMAxis_pH,
     axisFontSize: 9.0,
@@ -68,50 +66,9 @@ AdditiveChart.prototype = {
     OverColorSet: [0xFFFFFF],
     MainRangeMin: 0.0,
     MainRangeMax: 0.5,
-    canvas: undefined,
-    getCanvas: function () {
-        if (this.canvas == undefined) {
-            this.canvas = document.createElement('canvas');
-            this.canvas.id = "CursorLayer";
-            this.canvas.width = 100;
-            this.canvas.height = 100;
-            this.canvas.style.zIndex = 8;
-            this.canvas.style.position = "absolute";
-            this.canvas.style.border = "1px solid";
-            this.canvas.style.display = "none";
-            document.body.appendChild(this.canvas);
-        }
-        if (!this.canvas || !this.canvas.getContext) return false;
-        return this.canvas;
-    },
-    getChartWidth: function () {
-        var canvas = this.getCanvas();
-        return canvas.width;
-    },
-    getChartHeight: function () {
-        var canvas = this.getCanvas();
-        return canvas.height;
-    },
-    bgImage: undefined,
     updateChart: function () {
-        var canvas = this.getCanvas();
-        var ctx = canvas.getContext('2d');
         var w = this.getChartWidth();
         var h = this.getChartHeight();
-        if (this.bgImage) {
-            ctx.putImageData(this.bgImage, 0, 0);
-            ctx.fillStyle = 'red';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        } else {
-            var c = this.getCanvas();
-            this.bgImage = ctx.getImageData(0, 0, c.width, c.height);
-        }
-        if (this.model) {
-            var imgData = ctx.createImageData(w, h);
-            this.drawGraph(imgData, w, h, this.model, this.axisx, this.axisy, this.constValue);
-            ctx.putImageData(imgData, 0, 0);
-            ctx.fillStyle = 'black';
-        }
 
         var organismKey = this.organismKey;
         var self = this;
@@ -171,12 +128,6 @@ AdditiveChart.prototype = {
                         //self.records.push(item);
                     }
                 }
-
-                //clear clip
-                var c = self.getCanvas();
-                ctx.beginPath();
-                ctx.rect(0, 0, c.width, c.height);
-                //        	ctx.clip();
             }
         });
     },
@@ -189,7 +140,7 @@ AdditiveChart.prototype = {
         switch (axis) {
             case CMAxis_Temp:
                 min = 0;
-                max = 40.0;
+                max = 8.0;
                 d = 5.0;
                 break;
             case CMAxis_aw:
@@ -198,8 +149,8 @@ AdditiveChart.prototype = {
                 d = 0.01;
                 break;
             case CMAxis_pH:
-                min = 3.0;
-                max = 7.5;
+                min = 0;
+                max = 50;
                 d = 0.5;
                 break;
         }
@@ -215,7 +166,7 @@ AdditiveChart.prototype = {
                 renderTo: container,
                 type: 'scatter',
                 animation: false,
-                zoomType: 'none'
+                zoomType: 'xy'
             },
             credits: {
                 enabled: false
@@ -228,16 +179,16 @@ AdditiveChart.prototype = {
                     enabled: true,
                     text: '温度(℃)'
                 },
-                min: 0, max: 25,
+                min: 0, max: 10,
                 startOnTick: true,
                 endOnTick: true,
                 showLastLabel: false,
             },
             yAxis: {
                 title: {
-                    text: '濃度(ppm)'
+                    text: 'pH'
                 },
-                min: 0, max: 150
+                min: 0, max: 50
             },
             legend: {
                 enabled: false
@@ -276,20 +227,11 @@ AdditiveChart.prototype = {
             series: [{
                 name: 'Growth',
                 color: 'rgb(223, 83, 83)',
-                data: [[12.5, 25], [12.5, 50], [12.5, 70],
-                    [15, 25], [15, 50], [15, 75], [15, 100], [15, 125],
-                    [175.5, 25], [17.5, 50], [17.5, 75], [17.5, 100], [17.5, 125],
-                    [20, 75], [20, 100], [20, 125],
-                    [22.5, 75], [22.5, 100], [22.5, 125]]
-
+                data: []
             }, {
                 name: 'NoGrowth',
                 color: 'rgb(119, 152, 191)',
-                data: [[0, 75], [0, 100], [0, 125], [0, 150],
-                    [2.5, 75], [2.5, 100], [2.5, 125], [2.5, 150],
-                    [5, 75], [5, 100], [5, 125], [5, 150],
-                    [7.5, 75], [7.5, 100], [7.5, 125], [7.5, 150],
-                    [10, 100], [10, 125], [10, 150]]
+                data: []
             }]
         };
 
@@ -297,6 +239,59 @@ AdditiveChart.prototype = {
     },
     init: function(id) {
         var op = this.getScatterOption(id);
-        var scatter = new Highcharts.Chart(op);
+        var getIndex = function(axis) {
+            if( axis == CMAxis_Temp) return 2;
+            if( axis == CMAxis_pH) return 3;
+            if( axis == CMAxis_aw) return 4;
+        };
+        var ax = getIndex(this.axisx);
+        var ay = getIndex(this.axisy);
+        $.ajax({
+            type: "GET",
+            url: 'data/additive/' + Status.Organism.id + '_' + Status.Additive.id + '.json',
+            success: function(msg){
+                var response = $.parseJSON(msg);
+                var getdata = function() {
+                    var ret = undefined;
+                    $.each(response.datasets, function (i, v) {
+                        if( v.cons == Status.Cons ) {
+                            ret = v.data;
+                            return false;
+                        }
+                    });
+                    return ret;
+                };
+                var data = getdata();
+                console.log(data);
+                var gdata = Array();
+                var ngdata = Array();
+                var minx = 1000;
+                var maxx = 0;
+                var miny = 1000;
+                var maxy = 0;
+                for (var i = 0; i < data.length; i++) {
+                    var x = data[i][ax];
+                    var y = data[i][ay];
+                    if( x < minx ) minx = x;
+                    if( x > maxx ) maxx = x;
+                    if( y < miny ) miny = y;
+                    if( y > maxy ) maxy = y;
+                    console.log(x);
+                    var item = new Array(x, y);
+                    if( data[i][5] <= 0 )
+                        ngdata.push(item);
+                    else
+                        gdata.push(item);                
+                }
+                op.xAxis.min = minx;
+                op.xAxis.max = maxx;
+                op.yAxis.min = miny;
+                op.yAxis.max = maxy;
+                console.log('x=['+ minx+'-' + maxx + '], y=['+miny+'-'+maxy+']');
+                op.series[0].data = gdata;
+                op.series[1].data = ngdata;
+                var scatter = new Highcharts.Chart(op);
+            }
+        });
     }
 };
