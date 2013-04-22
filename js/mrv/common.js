@@ -216,6 +216,7 @@ var Screen = {
                     url: 'data/additive/' + Status.Organism.id + '_' + Status.Additive.id + '.JSON',
                     success: function(msg){
                         var response = $.parseJSON(msg);
+                        if ( response == null) response = msg;
                         $.each(response.datasets, function (i, v) {
                             $('#dataset-list').append('<a href="#" class="tile image" data-cons="' + v.cons + '"><div class="tile-content">'
                             +'                <img src="images/icons/bac9.jpg" />'
