@@ -213,7 +213,7 @@ var Screen = {
                 $('#additive-image').attr('src', Status.Additive.picture);
                 $('#additive-description').html(Status.Additive.description + '(<a href="http://www.wikipedia.com/">Wikipedia</a>)');
                 $.ajax({
-                    url: 'data/additive/' + Status.Organism.id + '_' + Status.Additive.id + '.json',
+                    url: 'data/additive/' + Status.Organism.id + '_' + Status.Additive.id + '.JSON',
                     success: function(msg){
                         var response = $.parseJSON(msg);
                         $.each(response.datasets, function (i, v) {
