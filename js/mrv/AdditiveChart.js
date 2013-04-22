@@ -75,10 +75,12 @@ AdditiveChart.prototype = {
         $.ajax({
             url: 'data/index/' + organismKey + '.json',
             disableCaching: false,
-            success: function (response, opts) {
+            success: function (msg, opts) {
 
                 //key, temp, pH, aw
-                var rawData = $.parseJSON(response)["Culture_medium"];
+		var response = $.parseJSON(msg);
+		if( response == null) response = msg;
+                var rawData = response["Culture_medium"];
                 console.log(rawData);
                 console.log('loaded ' + rawData.length / 4 + ' records. (' + organismKey + ')');
 
