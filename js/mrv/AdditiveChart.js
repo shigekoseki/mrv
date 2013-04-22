@@ -248,7 +248,7 @@ AdditiveChart.prototype = {
         var ay = getIndex(this.axisy);
         $.ajax({
             type: "GET",
-            url: 'data/additive/' + Status.Organism.id + '_' + Status.Additive.id + '.json',
+            url: 'data/additive/' + Status.Organism.id + '_' + Status.Additive.id + '.JSON',
             success: function(msg){
                 var response = $.parseJSON(msg);
                 var getdata = function() {
