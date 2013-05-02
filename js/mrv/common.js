@@ -4,7 +4,17 @@
 		{id:'Ah', name:'Aeromonas hydrophila', title:'<h1>Aeromonas <small> hydrophila</small></h1>'},
 		{id:'As', name:'Aeromonas sobria', title:'<h1>Aeromonas <small> sobria</small></h1>'},
 		{id:'Bac', name:'bacillus spoilage bacteria', picture:'(Bac)Bacilli.jpg', title:'<h1>bacillus <small> spoilage bacteria</small></h1>'},
-		{id:'Bc', name:'Bacillus cereus', picture:'(Bc)BacillusCereus.jpg', additive:['nitrite'], title:'<h1>Bacillus <small> cereus</small></h1>'},
+		{id:'Bc', name:'Bacillus cereus', picture:'(Bc)BacillusCereus.jpg', 
+            additive:['nitrite'],
+            additive_picture:{ 
+                nitrite:{
+                    '50': 7,                    
+                    '100': 6,                    
+                    '150': 5,                    
+                    '200': 4                    
+                }
+            },
+            title:'<h1>Bacillus <small> cereus</small></h1>'},
 		{id:'Bl', name:'Bacillus licheniformis', picture:'(Bl)Bacilli.jpg', title:'<h1>Bacillus <small> licheniformis</small></h1>'},
 		{id:'Bs', name:'Bacillus subtilis', picture:'(Bs)Bacillus_subtilis.jpg', title:'<h1>Bacillus <small> subtilis</small></h1>'},
 		{id:'Bt', name:'Brochothrix thermosphacta', title:'<h1>Brochothrix <small> thermosphacta</small></h1>'},
@@ -12,10 +22,67 @@
 		{id:'Cbp', name:'Clostridium botulinum (prot.)', picture:'(Cbp)C._botulnium.jpg', title:'<h1>Clostridium <small> botulinum (prot.)</small></h1>'},
 		{id:'Cj', name:'Campylobacter', picture:'(Cj)Campylobacter.jpg', title:'<h1>Campylobacter</h1>'},
 		{id:'Cp', name:'Clostridium perfringens', picture:'(Cp)Clostridium_perfringens.jpg', title:'<h1>Clostridium <small> perfringens</small></h1>'},
-		{id:'Ec', name:'Escherichia coli', picture:'(Ec)Ecoli.jpg', additive:['lactic_acid', 'acetic_acid'], title:'<h1>Escherichia <small> coli</small></h1>'},
+		{id:'Ec', name:'Escherichia coli', picture:'(Ec)Ecoli.jpg', 
+            additive:['lactic_acid', 'acetic_acid'], 
+            additive_picture:{ 
+                lactic_acid:{
+                    '0': 9,                    
+                    '3000': 8,                    
+                    '4504': 7,                    
+                    '8000': 5,                    
+                    '9008': 5,                    
+                    '18016': 3
+                },
+                acetic_acid:{
+                    '300': 8,                    
+                    '900': 7,                    
+                    '1500': 6,                    
+                    '6000': 5,                    
+                    '12000': 3
+                }
+            },
+            title:'<h1>Escherichia <small> coli</small></h1>'},
 		{id:'Ent', name:'enterobacteriaceae', picture:'(Ent)Enterobacteriaceae.jpg', title:'<h1>enterobacteriaceae</h1>'},
 		{id:'Lab', name:'lactic acid bacteria', picture:'(LAB)Lactic acid bacteria.jpg', title:'<h1>lactic <small> acid bacteria</small></h1>'},
-		{id:'Lm', name:'Listeria monocytogenes/innocua', additive:['lactic_acid', 'sorbic_acid', 'acetic_acid', 'nitrite'], picture:'(Lm)Listeria_monocytogenes.jpg', title:'<h1>Listeria <small> monocytogenes/innocua</small></h1>'},
+		{id:'Lm', name:'Listeria monocytogenes/innocua', 
+            additive:['lactic_acid', 'acetic_acid', 'nitrite'], 
+            additive_picture:{ 
+                lactic_acid:{
+                    '0': 9,                    
+                    '1801.6': 7,                    
+                    '2000': 6,                    
+                    '2500': 6,
+                    '3700': 5,
+                    '4000': 5,
+                    '5000': 5,
+                    '7500': 4,
+                    '9008': 4,
+                    '10000': 3,
+                    '15000': 3,
+                    '20000': 2
+                },
+                acetic_acid:{
+                    '0': 9,                    
+                    '1000': 7,                    
+                    '2500': 5,                    
+                    '5000': 4,                    
+                    '7500': 3,                    
+                    '10000': 2
+                },
+                nitrite:{
+                    '5': 9,                    
+                    '10': 9,                    
+                    '15': 8,                    
+                    '20': 8,                    
+                    '50': 7,                    
+                    '100': 5,                    
+                    '150': 4,                    
+                    '200': 3,                    
+                    '1000': 2
+                }
+            },
+            picture:'(Lm)Listeria_monocytogenes.jpg', 
+            title:'<h1>Listeria <small> monocytogenes/innocua</small></h1>'},
 		{id:'Mi', name:'micrococci', picture:'(Mi)Micrococci.png', title:'<h1>micrococci</h1>'},
 		{id:'Po', name:'Paenibacillus odorifer', picture:'(Po)Paenibacillus.jpg', title:'<h1>Paenibacillus <small> odorifer</small></h1>'},
 		{id:'Pp', name:'Photobacterium phosphoreum', title:'<h1>Photobacterium <small> phosphoreum</small></h1>'},
@@ -217,9 +284,11 @@ var Screen = {
                     success: function(msg){
                         var response = $.parseJSON(msg);
                         if ( response == null) response = msg;
+                        response.datasets.sort(function(a,b){return a.cons-b.cons;});
                         $.each(response.datasets, function (i, v) {
+                            var pic = Status.Organism.additive_picture[Status.Additive.id];
                             $('#dataset-list').append('<a href="#" class="tile image" data-cons="' + v.cons + '"><div class="tile-content">'
-                            +'                <img src="images/icons/bac9.jpg" />'
+                            +'                <img src="images/icons/bac' + (pic == undefined ? '9': pic[v.cons]) + '.jpg" />'
                             +'            </div>'
                             +'            <div class="brand bg-color-pink">'
                             +'                <p class="text"><big>' + v.cons +'</big> ' + Status.Additive.unit + '</p>'

@@ -279,16 +279,16 @@ AdditiveChart.prototype = {
                     if( y < miny ) miny = y;
                     if( y > maxy ) maxy = y;
                     console.log(x);
-                    var item = new Array(x, y);
+                    var item = new Array(y, x);
                     if( data[i][5] <= 0 )
                         ngdata.push(item);
                     else
                         gdata.push(item);                
                 }
-                op.xAxis.min = minx;
-                op.xAxis.max = maxx;
-                op.yAxis.min = miny;
-                op.yAxis.max = maxy;
+                op.xAxis.min = miny;
+                op.xAxis.max = maxy;
+                op.yAxis.min = minx;
+                op.yAxis.max = maxx;
                 console.log('x=['+ minx+'-' + maxx + '], y=['+miny+'-'+maxy+']');
                 op.series[0].data = gdata;
                 op.series[1].data = ngdata;
