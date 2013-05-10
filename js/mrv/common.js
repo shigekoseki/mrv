@@ -195,18 +195,20 @@ var Screen = {
                     if( v.picture == undefined ) return '('+v.id+')'+v.name+'.jpg';
                     return v.picture;
                 };
+                var html = '';
                 $.each(Master.Organism, function (i, v) {
                     if(  v.picture != undefined )
-                    $('#bacteria-group').append('<a href="#" class="tile image" data-organism="' + v.id + '">'
+                    html += '<div href="#" class="tile image" data-organism="' + v.id + '">'
                     +'    <div class="tile-content">'
                     +'        <img src="images/icons/' + getpic(v) + '" />'
                     +'    </div>'
                     +'    <div class="brand bg-color-blue">'
                     +'        <span class="name">' + v.name + '</span>'
                     +'    </div>'
-                    +'</a>');
+                    +'</div>';
                 });
-                $('#bacteria-group > a').click(function () {
+                $('#bacteria-group').append(html);
+                $('#bacteria-group > div').click(function () {
                     var organism = $(this).attr('data-organism');
                     Status.Organism = Master.findOrganism(organism);
                     moveTo("foodlst");
@@ -429,18 +431,27 @@ function moveTo(name) {
     }
     $('#header-content').html(title);
     $('#main-content').fadeOut('fast', function(){
-        $('#main-content').html("");
-        $('#main-content').load('fragment/'+sc.fragment, function () {
+        $('#main-content')
+            .html("")
+            .load('fragment/' + sc.fragment, function () {
                 //Screen init
                 if (sc.init != undefined) sc.init();
+                //For reconstruct visual tree
+                $('#main-content')
+                    .css('visibility', 'hidden')
+                    .css('display', 'block');
                 //For plugin-reinitialization
                 $('[data-role="button-set"]').each(function () {
                     $(this).ButtonSet();
                 })
-                $()["slider"]({initAll: true});
+                $()["slider"]({ initAll: true });
+                $.StartMenu();
                 //Show
-                $('#main-content').fadeIn('fast');
-        });
+                $('#main-content')
+                    .css('display', 'none')
+                    .css('visibility', 'visible')
+                    .fadeIn('fast');
+            });
     });
 }
 

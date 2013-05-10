@@ -112,13 +112,20 @@
         
         var setPageWidth = function () {
             var tilesWidth = 0;
-            
+            var flag = true;
             $startMenu.find(".tile-group").each(function(){
                 tilesWidth += $(this).outerWidth() + 80;
+                console.log("add to " + $(this).attr("id") + " tilewith: " + ($(this).width()));
+                if ($(this).width() == 0) flag = false;
             });
+            //To avoid bug of IE: width() or height() returns zero (sometime)
+            if (flag == false) return;
+            console.log("tilewith: " + tilesWidth);
 
-            $startMenu.css("width", 120 + tilesWidth + 20);
-            
+            //To avoid above IE bug: fix the width
+            //$startMenu.css("width", 120 + tilesWidth + 20);
+            $startMenu.css("width", 2000);
+
             $(".page").css('width', '').css({
                 width: $(document).width()
             });
