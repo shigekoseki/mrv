@@ -211,7 +211,11 @@ var Screen = {
                     var food = $(this).attr('data-food');
                     if( food != undefined ){
                         Status.Food = Master.findFood(food);
-                        moveTo("cmmodel");
+                        if (Status.Food.id == "culture_medium") {
+                            moveTo("cmmodel");
+                        } else {
+                            moveTo("foodmodel");
+                        }
                         return;
                     }
                     var additive = $(this).attr('data-additive');
