@@ -181,7 +181,10 @@ var Status = {
     Organism: undefined,
     Food: undefined,
     Additive: undefined,
-    Cons: undefined
+    Cons: undefined,
+    DataSet: undefined,
+    DataSetFilter: undefined,
+    DataId: undefined
 };
 
 var Screen = {
@@ -321,73 +324,53 @@ var Screen = {
                     axisy: CMAxis_Temp,
                     constValue: 0.99
                 });
+                $("#chart-caption").html("" + Status.Cons + "ppm");
             }
         },
         {
             name: 'datalist',
             fragment: 'datalist.html',
-            title: '<h1 id="caption">{Additive-name}{Food-name}<small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'foodlst\')" class="back-button big page-back"></a>',
+            title: '<h1 id="caption">{Additive-name}{Food-name}<small>{Organism-name}</small></h1><a href="#" onclick="backFromDataList()" class="back-button big page-back"></a>',
             init: function () {
-                    var getChartOption = function (container) {
-                            chart = {
-                                chart: {
-                                    renderTo: container,
-                                    spacingTop: 10,
-                                    spacingLeft: 0,
-                                    spacingBottom: 0
-                                },
-                                credits: {
-                                    enabled: false
-                                },
-                                exporting: {
-                                    enabled: false
-                                },
-                                legend: {
-                                    enabled: false
-                                },
-                                xAxis: {
-                                    min: 0,
-                                    max: 100,
-                                    title: { text: "" }
-                                },
-                                yAxis: {
-                                    type: "logarithmic",
-                                    min: 1,
-                                    max: 100000,
-                                    title: { texts: "" }
-                                },
-                                title: {
-                                    text: ''
-                                },
-                                series: [{
-                                    type: 'spline',
-                                    name: 'Regression Line',
-                                    data: [[0, 1], [5, 100], [10, 10000], [20, 100000], [100, 100000]],
-                                    marker: {
-                                        enabled: false
-                                    },
-                                    states: {
-                                        hover: {
-                                            lineWidth: 0
-                                        }
-                                    },
-                                    enableMouseTracking: false
-                                }, {
-                                    type: 'scatter',
-                                    name: 'Observations',
-                                    data: [[0, 10], [5, 5000], [10, 5000], [20, 120000]],
-                                    marker: {
-                                        radius: 0
-                                    },
-                                    enableMouseTracking: false
-                                }]
-                            };
-	                    return chart;
-                    };
-                    $("div.data-chart").each(function(){
-		            var op = getChartOption($(this).attr("id"));
-		            var chart = new Highcharts.Chart(op);
-	            });
+                    var html = '';
+                    var count = 0;
+                    var total = 0;
+                    $.each(Status.DataSet, function (i, v) {
+                        total++;
+                            if( Status.DataSetFilter.ph != undefined ) {
+                                  if( v[3] != Status.DataSetFilter.ph ) return;
+                            }
+                            if( Status.DataSetFilter.temp != undefined ) {
+                                  if( v[2] != Status.DataSetFilter.temp ) return;
+                            }
+                            if( Status.DataSetFilter.aw != undefined ) {
+                                  if( v[4] != Status.DataSetFilter.aw ) return;
+                            }
+                            html += "<li data-key='"+v[0]+"' data-id='"+v[1]+"' class='bg-color-pinkDark fg-color-white' ><div class='data'>" + v[5] + " <small>(Temp.:" + v[2] + " pH:" + v[3] + " aw:" + v[4] + ")</small></div></li>";
+                            count++;
+                    });
+                    $("#datalist").append(html);
+                    $("#datalist > li").click(function () {
+                        var id = $(this).attr('data-id');
+                        Status.DataId = id;
+                        moveTo('detail');
+                    });
+
+                    var filtertxt = "Spec_rates filtered by " + Status.Cons + " ppm";
+                    if (Status.DataSetFilter.ph != undefined) {
+                        filtertxt += " and ";
+                        filtertxt += ' pH:' + Status.DataSetFilter.ph;
+                    }
+                    if (Status.DataSetFilter.temp != undefined) {
+                        filtertxt += " and ";
+                        filtertxt += ' Temp.:' + Status.DataSetFilter.temp;
+                    }
+                    if (Status.DataSetFilter.aw != undefined) {
+                        filtertxt += " and ";
+                        filtertxt += ' aw:' + Status.DataSetFilter.aw;
+                    }
+                    filtertxt += " (" + count + "/" + total + ")";
+                    $("#datalist-caption").html(filtertxt);
             }
         },
         {
@@ -395,6 +378,75 @@ var Screen = {
             fragment: 'detail.html',
             title: '<h1 id="caption">{Additive-name}{Food-name}<small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'datalist\')" class="back-button big page-back"></a>',
             init: function () {
+                var getChartOption = function (container) {
+                    chart = {
+                        chart: {
+                            renderTo: container,
+                            spacingTop: 10,
+                            spacingLeft: 0,
+                            spacingBottom: 0
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        exporting: {
+                            enabled: false
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        xAxis: {
+                            min: 0,
+                            max: 100,
+                            title: { text: "" }
+                        },
+                        yAxis: {
+                            type: "logarithmic",
+                            min: 1,
+                            max: 100000,
+                            title: { texts: "" }
+                        },
+                        title: {
+                            text: ''
+                        },
+                        series: [{
+                            type: 'spline',
+                            name: 'Regression Line',
+                            data: [[0, 1], [5, 100], [10, 10000], [20, 100000], [100, 100000]],
+                            marker: {
+                                enabled: false
+                            },
+                            states: {
+                                hover: {
+                                    lineWidth: 0
+                                }
+                            },
+                            enableMouseTracking: false
+                        }, {
+                            type: 'scatter',
+                            name: 'Observations',
+                            data: [[0, 10], [5, 5000], [10, 5000], [20, 120000]],
+                            marker: {
+                                radius: 0
+                            },
+                            enableMouseTracking: false
+                        }]
+                    };
+                    return chart;
+                };
+                var id = parseInt(Status.DataId);
+                var fileName = id - (id % 100);
+                $.ajax({
+                    url: 'data/master/' + fileName + '.JSON',
+                    success: function (msg) {
+                        var response = $.parseJSON(msg);
+                        if (response == null) response = msg;
+                        var data = response[id % 100];
+                        $("#detail-table-template").tmpl(data).appendTo("#detail-table-holder");
+
+                    }
+                });
+                new Highcharts.Chart(getChartOption("detail-chart"));
             }
         },
     ],
@@ -409,6 +461,14 @@ var Screen = {
         return ret;
     },
 };
+
+function backFromDataList() {
+    if( Status.Additive != undefined ) {
+        moveTo('additivemodel');
+    }else{
+        moveTo('foodlist');
+    }
+}
 
 function moveTo(name) {
     console.log('moveTo ' + name);
@@ -454,5 +514,4 @@ function moveTo(name) {
             });
     });
 }
-
 

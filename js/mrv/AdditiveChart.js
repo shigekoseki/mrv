@@ -220,6 +220,8 @@ AdditiveChart.prototype = {
                                 'Alt: '+ event.altKey +'\n'+
                                 'Control: '+ event.ctrlKey +'\n'+
                                 'Shift: '+ event.shiftKey +'\n');*/
+                                Status.DataSetFilter = {ph:this.y, temp:this.x};
+                                console.log(Status.DataSetFilter);
                                 moveTo('datalist');
                             }
                         }
@@ -293,6 +295,7 @@ AdditiveChart.prototype = {
                 op.series[0].data = gdata;
                 op.series[1].data = ngdata;
                 var scatter = new Highcharts.Chart(op);
+		Status.DataSet = data;
             }
         });
     }

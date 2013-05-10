@@ -1,43 +1,46 @@
-﻿    <div class="page-region-content">
-		<div style="background-color: #eee;">
+﻿<script id="detail-table-template" type="text/x-jquery-tmpl">
 		<table>
 		<tr>
 			<th>Organism:</th>
-			<td>Escherichia coli</td>
+			<td>${organism}</td>
 		</tr>
 		<tr>
 			<th>Temperature:</th>
-			<td>37.00</td>
+			<td>${temp}</td>
 		</tr>
 		<tr>
 			<th>pH:</th>
-			<td>6.50</td>
+			<td>${pH}</td>
 		</tr>
 		<tr>
 			<th>Water activity:</th>
-			<td>0.970</td>
+			<td>${aw}</td>
 		</tr>
 		<tr>
 			<th>μmax(1/h):</th>
-			<td>0.116543</td>
+			<td>${spec_rate}</td>
 		</tr>
 		<tr>
 			<th>Conditions:</th>
-			<td>shaken, NaCl(%):5</td>
+			<td>${condition}</td>
 		</tr>
 		<tr>
 			<th>Source:</th>
-			<td>Buchanan (et al.), 1992</td>
+			<td>${source}</td>
 		</tr>
 		<tr>
 			<th>Furthre specifications:</th>
-			<td>Strain(s): 933 A9218-C1 45753-35, Serotypes(s): O157: H7</td>
+			<td>${specification}</td>
 		</tr>
 		<tr>
 			<th>Details:</th>
-			<td>Growth of E. coli in aerobic or ...</td>
+			<td>${details}</td>
 		</tr>
 		</table>
+</script>
+
+    <div class="page-region-content">
+		<div id="detail-table-holder" style="background-color: #eee;">
 	    </div>	
 	</div>
-	<div id="detail-chart" class="data-chart" style="position:absolute;left:600px;top:130px;width:370px; height:186px;"></div>
+	<div id="detail-chart" class="data-chart" style="width:370px; height:186px;"></div>
