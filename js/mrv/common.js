@@ -273,21 +273,13 @@ var Screen = {
                     success: function(msg){
                         var response = $.parseJSON(msg);
                         if ( response == null) response = msg;
-                        response.datasets.sort(function(a,b){return a.cons-b.cons;});
+                        response.datasets.sort(function (a, b) { return a.cons - b.cons; });
+                        var pic = Status.Organism.additive_picture[Status.Additive.id];
                         $.each(response.datasets, function (i, v) {
-                            var pic = Status.Organism.additive_picture[Status.Additive.id];
-                            $('#dataset-list').append('<a href="#" class="tile image" data-cons="' + v.cons + '"><div class="tile-content">'
-                            +'                <img src="images/icons/bac' + (pic == undefined ? '9': pic[v.cons]) + '.jpg" />'
-                            +'            </div>'
-                            +'            <div class="brand bg-color-pink">'
-                            +'                <p class="text"><big>' + v.cons +'</big> ' + Status.Additive.unit + '</p>'
-                            +'            </div>'
-                            +'            <div class="tile-status">'
-                            +'                <div class="badge bg-color-pink">' + v.data.length + '</div>'
-                            +'            </div>'
-                            +'        </a>');
+                            v.pic = pic[v.cons];
                         });
-                        $('#dataset-list > a').click(function(){
+                        $("#cons-list-template").tmpl(response.datasets, { unit: Status.Additive.unit }).appendTo("#dataset-list");
+                        $('#dataset-list > div').click(function(){
                             var cons = $(this).attr('data-cons');
                             Status.Cons = cons;
                             moveTo('additivemodel');

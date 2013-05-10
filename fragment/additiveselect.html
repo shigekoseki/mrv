@@ -1,4 +1,17 @@
-﻿<div class="page-region-content">
+﻿<script id="cons-list-template" type="text/x-jquery-tmpl">
+    <div href="#" class="tile image" data-cons="${cons}">
+        <div class="tile-content">
+            <img src="images/icons/bac${pic}.jpg" />
+        </div>
+        <div class="brand bg-color-pink">
+            <p class="text"><big>${cons}</big>${$item.unit}</p>
+        </div>
+        <div class="tile-status">
+            <div class="badge bg-color-pink">${data.length}</div>
+        </div>
+    </div>
+</script>
+<div class="page-region-content">
 <div class="grid">
     <div class="row">
         <div class="span4">
