@@ -194,23 +194,7 @@ var Screen = {
             fragment: 'baclst.html',
             title: '<h1>MRV<small>Microbial Responses Viewer</small></h1>',
             init: function () {
-                var getpic = function(v) {
-                    if( v.picture == undefined ) return '('+v.id+')'+v.name+'.jpg';
-                    return v.picture;
-                };
-                var html = '';
-                $.each(Master.Organism, function (i, v) {
-                    if(  v.picture != undefined )
-                    html += '<div href="#" class="tile image" data-organism="' + v.id + '">'
-                    +'    <div class="tile-content">'
-                    +'        <img src="images/icons/' + getpic(v) + '" />'
-                    +'    </div>'
-                    +'    <div class="brand bg-color-blue">'
-                    +'        <span class="name">' + v.name + '</span>'
-                    +'    </div>'
-                    +'</div>';
-                });
-                $('#bacteria-group').append(html);
+                $("#bacteria-list-template").tmpl(Master.Organism).appendTo("#bacteria-group");
                 $('#bacteria-group > div').click(function () {
                     var organism = $(this).attr('data-organism');
                     Status.Organism = Master.findOrganism(organism);
