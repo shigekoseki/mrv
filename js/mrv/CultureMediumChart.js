@@ -9,7 +9,8 @@ var CultureMediumChart = function (arg) {
         this.axisx = arg.axisx;
         this.axisy = arg.axisy;
         this.constValue = arg.constValue;
-        this.init(arg.id);
+        this.id = arg.id;
+        this.init();
     }
 };
 
@@ -112,79 +113,11 @@ CultureMediumChart.prototype = {
             ctx.putImageData(imgData, 0, 0);
             ctx.fillStyle = 'black';
         }
-
-        console.log('updateChart:' + this.organismKey);
-        var organismKey = this.organismKey;
-        var self = this;
-        $.ajax({
-            url: 'data/index/' + organismKey + '.json',
-            disableCaching: false,
-            success: function (response, opts) {
-
-                //key, temp, pH, aw
-                var rawData = $.parseJSON(response)["Culture_medium"];
-                console.log(rawData);
-                console.log('loaded ' + rawData.length / 4 + ' records. (' + organismKey + ')');
-
-                var rangex = self.getAxisRange(self.axisx);
-                var rangey = self.getAxisRange(self.axisy);
-
-                var left = 20.0;
-                var top = 10.0;
-                var ch = self.getChartHeight();
-                var cw = self.getChartWidth();
-
-                //make clip
-                ctx.beginPath();
-                ctx.rect(left, top, cw, ch);
-                //            ctx.clip();
-
-                var v = 0;
-                var getx;
-                if (self.axisx == CMAxis_Temp) { getx = function (data) { return data.Temp; }; }
-                else if (self.axisx == CMAxis_aw) { getx = function (data) { return data.aw; }; }
-                else if (self.axisx == CMAxis_pH) { getx = function (data) { return data.pH; }; }
-                var gety;
-                if (self.axisy == CMAxis_Temp) { gety = function (data) { return data.Temp; }; }
-                else if (self.axisy == CMAxis_aw) { gety = function (data) { return data.aw; }; }
-                else if (self.axisy == CMAxis_pH) { gety = function (data) { return data.pH; }; }
-
-                var count = rawData.length / 5;
-                console.log(count);
-                self.records = [];
-                var records = rawData;
-                for (var i = 0; i < count; i++) {
-                    var item = {
-                        key: records[i * 4],
-                        Temp: records[i * 4 + 1],
-                        pH: records[i * 4 + 2],
-                        aw: records[i * 4 + 3],
-                        flag: records[i * 4 + 4]
-                    };
-                    var y = ch - (ch * (gety(item) - rangey.min) / (rangey.max - rangey.min));
-                    var x = cw * (getx(item) - rangex.min) / (rangex.max - rangex.min);
-
-                    if ((self.axisy == CMAxis_pH
-	            	&& Math.abs(self.constValue - item.aw) < 0.05)
-	             || (self.axisy == CMAxis_aw
-	             	&& Math.abs(self.constValue - item.pH) < 0.5)) {
-                        //self.drawEllipse(ctx, x+left, y+top, 5, 5, item.flag == "G" ? "Red" : "Green");
-                        //self.records.push(item);
-                    }
-                }
-
-                //clear clip
-                var c = self.getCanvas();
-                ctx.beginPath();
-                ctx.rect(0, 0, c.width, c.height);
-                //        	ctx.clip();
-            }
-        });
     },
 
     //begin drawGraph
     drawGraph: function (imgData, w, h, model, axisx, axisy, cons_value) {
-        console.log("drawGraph");
+        //console.log("drawGraph");
         var cons = CMAxis_aw;
         if ((axisx == CMAxis_Temp || axisy == CMAxis_Temp)) {
             if ((axisx == CMAxis_aw || axisy == CMAxis_aw)) { cons = CMAxis_pH; }
@@ -196,7 +129,6 @@ CultureMediumChart.prototype = {
         var map = new Array(w * h);
         var max = Number.MIN_VALUE;
         var min = Number.MAX_VALUE;
-        console.log(model);
 
         for (var y = 0; y < h; y++) {
             for (var x = 0; x < w; x++) {
@@ -244,7 +176,6 @@ CultureMediumChart.prototype = {
                 if (v < min) min = v;
             }
         }
-        console.log(this);
 
         for (var y = 0; y < h; y++) {
             for (var x = 0; x < w; x++) {
@@ -290,31 +221,36 @@ CultureMediumChart.prototype = {
         var min = 0.0;
         var max = 0.0;
         var d = 0.0;
+        var caption = '';
 
         switch (axis) {
             case CMAxis_Temp:
                 min = 0;
                 max = 40.0;
                 d = 5.0;
+                caption = '温度(℃)';
                 break;
             case CMAxis_aw:
                 min = 0.9;
                 max = 1.0;
                 d = 0.01;
+                caption = '水分活性';
                 break;
             case CMAxis_pH:
                 min = 3.0;
                 max = 7.5;
                 d = 0.5;
+                caption = 'pH';
                 break;
         }
         return {
             min: min,
             max: max,
-            d: d
+            d: d,
+            caption: caption
         };
     },
-    getScatterOption: function (container) {
+    getScatterOption: function (container, callback) {
         var op = {
             chart: {
                 renderTo: container,
@@ -381,30 +317,86 @@ CultureMediumChart.prototype = {
             series: [{
                 name: 'Growth',
                 color: 'rgb(223, 83, 83)',
-                data: [[12.5, 25], [12.5, 50], [12.5, 70],
-                    [15, 25], [15, 50], [15, 75], [15, 100], [15, 125],
-                    [175.5, 25], [17.5, 50], [17.5, 75], [17.5, 100], [17.5, 125],
-                    [20, 75], [20, 100], [20, 125],
-                    [22.5, 75], [22.5, 100], [22.5, 125]]
+                data: []
 
             }, {
                 name: 'NoGrowth',
                 color: 'rgb(119, 152, 191)',
-                data: [[0, 75], [0, 100], [0, 125], [0, 150],
-                    [2.5, 75], [2.5, 100], [2.5, 125], [2.5, 150],
-                    [5, 75], [5, 100], [5, 125], [5, 150],
-                    [7.5, 75], [7.5, 100], [7.5, 125], [7.5, 150],
-                    [10, 100], [10, 125], [10, 150]]
+                data: []
             }]
         };
+        
+        var organismKey = this.organismKey;
+        var self = this;
+        $.ajax({
+            url: 'data/index/' + organismKey + '.JSON',
+            dataType: "json",
+            disableCaching: false,
+            success: function (response, opts) {
 
-        return op;
+                //key, temp, pH, aw
+                var rawData = response["Culture_medium"]; //$.parseJSON(response)["Culture_medium"];
+                //console.log('loaded ' + rawData.length / 4 + ' records. (' + organismKey + ')');
+
+                var rangex = self.getAxisRange(self.axisx);
+                var rangey = self.getAxisRange(self.axisy);
+                op.xAxis.min = rangex.min;
+                op.xAxis.max = rangex.max;
+                op.xAxis.title.text = rangex.caption;
+                op.yAxis.min = rangey.min;
+                op.yAxis.max = rangey.max;
+                op.yAxis.title.text = rangey.caption;
+
+                var left = 20.0;
+                var top = 10.0;
+                var ch = self.getChartHeight();
+                var cw = self.getChartWidth();
+
+                var v = 0;
+                var getx;
+                if (self.axisx == CMAxis_Temp) { getx = function (data) { return data.Temp; }; }
+                else if (self.axisx == CMAxis_aw) { getx = function (data) { return data.aw; }; }
+                else if (self.axisx == CMAxis_pH) { getx = function (data) { return data.pH; }; }
+                var gety;
+                if (self.axisy == CMAxis_Temp) { gety = function (data) { return data.Temp; }; }
+                else if (self.axisy == CMAxis_aw) { gety = function (data) { return data.aw; }; }
+                else if (self.axisy == CMAxis_pH) { gety = function (data) { return data.pH; }; }
+
+                var count = rawData.length / 5;
+                var records = rawData;
+                for (var i = 0; i < count; i++) {
+                    var item = {
+                        key: records[i * 4],
+                        Temp: records[i * 4 + 1],
+                        pH: records[i * 4 + 2],
+                        aw: records[i * 4 + 3],
+                        flag: records[i * 4 + 4]
+                    };
+                    var y = ch - (ch * (gety(item) - rangey.min) / (rangey.max - rangey.min));
+                    var x = cw * (getx(item) - rangex.min) / (rangex.max - rangex.min);
+
+		             var data = [parseFloat(getx(item)), parseFloat(gety(item))];
+		             if( item.flag == "G" ) {
+		             	op.series[0].data.push(data);
+		             }else{
+		             	op.series[1].data.push(data);
+		             }
+                }
+
+                callback(op);
+            }
+        });
     },
-    init: function(id) {
-        this.updateChart();
-        var url = this.canvas.toDataURL();
-        var op = this.getScatterOption(id);
-        op.chart.plotBackgroundImage = url;
-        var scatter = new Highcharts.Chart(op);
+    init: function() {
+    	var f = this.model.hasModel();
+    	var url;
+    	if( f ) {
+	        this.updateChart();
+	        url = this.canvas.toDataURL();
+	    }
+        this.getScatterOption(this.id, function(op){
+        	if( f ) op.chart.plotBackgroundImage = url;
+    	    var scatter = new Highcharts.Chart(op);
+        });
     }
 };

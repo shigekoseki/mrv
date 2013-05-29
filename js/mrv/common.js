@@ -242,14 +242,53 @@ var Screen = {
             fragment: 'culturemedium.html',
             title: '<h1>{Food-name}<small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'foodlst\')" class="back-button big page-back"></a>',
             init: function () {
+            	PolynomialModel.setOrganismType(Status.Organism.id);
                 var chart = new CultureMediumChart({
                     id: "home_left_chart",
                     model: PolynomialModel,
-                    organismKey: "Ah",
+                    organismKey: Status.Organism.id,
                     axisx: CMAxis_Temp,
-                    axisy: CMAxis_pH,
-                    constValue: 0.99
+                    axisy: CMAxis_aw,
+                    constValue: 5
                 });
+                var get_ph = function(){
+                	var val = parseFloat($('#slider-ph').data('value'));
+                	if( isNaN(val) ) return 5;
+                	return val/10;
+                };
+                var get_aw = function(){
+                	var val = parseFloat($('#slider-aw').data('value'));
+                	if( isNaN(val) ) return 1;
+                	return val/100;
+                };
+                var update_aw = function(){
+                	chart.axisy = CMAxis_aw;
+                	chart.constValue = get_ph();
+                	console.log('set pH to ' + chart.constValue);
+                	chart.init();
+                	$("#slider-row-aw").hide();
+                	$("#slider-row-ph").show();
+                };
+                var update_ph = function(){
+                	chart.axisy = CMAxis_pH;
+                	chart.constValue = get_aw();
+                	console.log('set aw to ' + chart.constValue);
+                	chart.init();
+                	$("#slider-row-aw").show();
+                	$("#slider-row-ph").hide();
+                };
+			    $('#slider-aw').on('changed', function(e, val){
+                	chart.constValue = parseFloat(val)/100;
+                	console.log('set aw to ' + chart.constValue);
+                	chart.init();
+			    });
+			    $('#slider-ph').on('changed', function(e, val){
+                	chart.constValue = parseFloat(val)/10;
+                	console.log('set pH to ' + chart.constValue);
+                	chart.init();
+			    });
+                $("#cm-button-aw").click(update_aw);
+                $("#cm-button-ph").click(update_ph);
             }
         },
         {
@@ -453,7 +492,6 @@ function backFromDataList() {
 function moveTo(name) {
     console.log('moveTo ' + name);
     var sc = Screen.findScreen(name);
-    console.log(Status);
     var title = sc.title;
     if( Status.Organism != undefined){
         title = title.replace('{Organism-title}', Status.Organism.title);

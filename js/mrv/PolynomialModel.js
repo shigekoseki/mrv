@@ -14,7 +14,15 @@ var PolynomialModel = {
     },
     setOrganismType: function (organismType) {
         this.data = this.find(organismType);
-        console.log(this.data);
+        if( this.data == undefined )
+        {
+        	console.log('Notice: PolynomialModel has no definition of organism ' + organismType);
+        }else{
+	        console.log(this.data);
+	    }
+    },
+    hasModel: function() {
+    	return this.data != undefined;
     },
     getMyuMax: function (temp, ph, aw) {
         var sqrt_one_minus_aw = Math.sqrt(1.0 - aw);

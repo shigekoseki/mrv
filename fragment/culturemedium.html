@@ -9,21 +9,21 @@
                             <div class="span1">Switch</div>
                             <div class="span4">
                                 <div class="button-set" data-role="button-set">
-                                    <button class="active">temp - aw</button>
-                                    <button>temp - pH</button>
+                                    <button id="cm-button-aw" class="active">temp - aw</button>
+                                    <button id="cm-button-ph" >temp - pH</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" id="slider-row-ph">
                             <div class="span1">pH</div>
                             <div class="span4">
-                                <div class="slider" data-role="slider" data-param-init-value="35"></div>
+                                <div id="slider-ph" class="slider" data-role="slider" data-param-init-value="50"></div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" id="slider-row-aw">
                             <div class="span1">aw</div>
                             <div class="span4">
-                                <div class="slider" data-role="slider" data-param-init-value="35"></div>
+                                <div id="slider-aw" class="slider" data-role="slider" data-param-init-value="100"></div>
                             </div>
                         </div>
                     </div>
