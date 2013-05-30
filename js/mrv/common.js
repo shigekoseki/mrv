@@ -106,10 +106,25 @@
 		{id:'Ppx', name:'Paenibacillus polymyxa', title:'<h1>Paenibacillus <small> polymyxa</small></h1>'}
 	],
     Food: [
-        {id: 'culture_medium', name:'Culture medium'},
-        {id: 'beef', name:'Beef'},
-        {id: 'pork', name:'Pork'},
-        {id: 'chicken', name:'Chicken'},
+        {id: 'Culture_medium', name:'Culture medium'},
+        {id: 'Beef', name:'Beef'},
+        {id: 'Pork', name:'Pork'},
+        {id: 'Poultry', name:'Poultry'},
+        {id: 'Sausage', name:'Sausage'},
+        {id: 'Meat_other', name:'Other or unknown type of meat'},
+        {id: 'Seafood', name:'Seafood'},
+        {id: 'Milk', name:'Milk'},
+        {id: 'Cheese', name:'Cheese'},
+        {id: 'Dairy_other', name:'Other or unknown type of dairy'},
+        {id: 'Egg', name:'Egg or egg product'},
+        {id: 'Dessert', name:'Dessert food'},
+        {id: 'Sauce/Dressing', name:'Sauce/Dressing'},
+        {id: 'Produce', name:'Vegetable or fruit and their products'},
+        {id: 'Bread', name:'Bread'},
+        {id: 'Infant_food', name:'Infant food'},
+        {id: 'Beverage', name:'Juice, beverage'},
+        {id: 'Water', name:'Water'},
+        {id: 'Other/mix', name:'Other, mixed, uncategorised or unknown type of food'},
     ],
     Additive: [
         {id:'lactic_acid', name:'Lactic Acid', namejp:'乳酸', 
@@ -165,6 +180,7 @@
         var ret = undefined;
         $.each(this.Food, function (i, v) {
             if (v.id == id) {
+            	console.log("Master.findFood: found id=" + id);
                 ret = v;
                 return false;
             }
@@ -211,7 +227,7 @@ var Screen = {
                     var food = $(this).attr('data-food');
                     if( food != undefined ){
                         Status.Food = Master.findFood(food);
-                        if (Status.Food.id == "culture_medium") {
+                        if (Status.Food.id == "Culture_medium") {
                             moveTo("cmmodel");
                         } else {
                             moveTo("foodmodel");
@@ -297,7 +313,7 @@ var Screen = {
             title: '<h1 id="caption">Beef <small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'foodlst\')" class="back-button big page-back"></a>',
             init: function () {
             	SqrtModel.setOrganismType(Status.Organism.id);
-            	SqrtModel.setFoodType(Status.Food.id);
+            	SqrtModel.setFoodType(Status.Food.id.toLowerCase());
                 var chart = new TempBar({
                     id: "home_left_chart",
                     organismKey: Status.Organism.id,
