@@ -35,10 +35,23 @@ var SqrtModel = {
     },
     setOrganismType: function (organismType) {
         this.data = this.find(organismType);
-        console.log(this.data);
+        if( this.data == undefined )
+        {
+        	console.log('Notice: SqrtModel has no definition of organism ' + organismType);
+        }else{
+	        console.log(this.data);
+	    }
     },
     setFoodType: function (foodType) {
-        this.bfParam = this.data[foodType];
+        if( this.data != undefined )
+        {
+	        this.bfParam = this.data[foodType];
+	    }
+    },
+    hasModel: function() {
+    	if( this.data == undefined ) return false;
+    	if( this.bfParam == undefined ) return false;
+    	return true;
     },
     getMyuMax: function (temp, ph, aw) {
         var data = this.data;

@@ -2,8 +2,14 @@
 var TempBar = function (arg) {
     if (arg != undefined) {
         this.organismKey = arg.organismKey;
+        this.foodKey = arg.foodKey;
         this.model = arg.model;
-        this.init(arg.id);
+        this.id = arg.id;
+        this.pH = arg.pH;
+        this.aw = arg.aw;
+        this.RangeMax = arg.max;
+        this.RangeMin = arg.min;
+        this.init();
     }
 };
 
@@ -101,8 +107,11 @@ TempBar.prototype = {
         var max = Number.MIN_VALUE;
         var min = Number.MAX_VALUE;
 
+		console.log("TempBar.drawGraph: pH="+pH+", aw="+aw);
+		var off = this.RangeMin;
+		var range = this.RangeMax - this.RangeMin;
         for (var x = 0; x < w; x++) {
-            var temp = x * 45 / w;
+            var temp = (x * range / w) + off;
             var v = model.getMyuMax(temp, pH, aw);
             map[x] = v;
             if (v > max) max = v;
@@ -143,7 +152,7 @@ TempBar.prototype = {
             console.log(this);
         }
     },
-    getScatterOption: function (container) {
+    getScatterOption: function (container, callback) {
         var op = {
             chart: {
                 renderTo: container,
@@ -173,6 +182,8 @@ TempBar.prototype = {
                 title: {
                     text: ''
                 },
+                min: 0,
+                max: 100,
                 gridLineWidth: 0,
                 startOnTick: false,
                 endOnTick: false
@@ -184,8 +195,6 @@ TempBar.prototype = {
 
             series: [{
                 data: [
-                    [90, 50, 63],
-                    [10, 50, 89]
                 ],
                 marker: {
                     fillColor: {
@@ -198,8 +207,6 @@ TempBar.prototype = {
                 }
             }, {
                 data: [
-                    [42, 50, 20],
-                    [6, 50, 1]
                 ],
                 color: 'rgba(170,70,67,0.5)',
                 marker: {
@@ -214,16 +221,68 @@ TempBar.prototype = {
                 }
             }]
         };
+        
+        
+        var organismKey = this.organismKey;
+        var self = this;
+        $.ajax({
+            url: 'data/index/' + organismKey + '.JSON',
+            dataType: "json",
+            disableCaching: false,
+            success: function (response, opts) {
 
-        return op;
+                //key, temp, pH, aw
+                var key = self.foodKey.substring(0,1).toUpperCase() + self.foodKey.substring(1);
+                var rawData = response[key]; //$.parseJSON(response)["Culture_medium"];
+                rawData.pop();
+                console.log(rawData);
+                console.log('loaded ' + rawData.length / 5 + ' records. (' + organismKey + '-' + self.foodKey +')');
+
+                var left = 20.0;
+                var top = 10.0;
+                var ch = self.getChartHeight();
+                var cw = self.getChartWidth();
+
+                var v = 0;
+                op.xAxis.min = self.RangeMin;
+                op.xAxis.max = self.RangeMax;
+
+                var count = rawData.length / 5;
+                var records = rawData;
+                for (var i = 0; i < count; i++) {
+                    var item = {
+                        key: records[i * 5],
+                        Temp: records[i * 5 + 1],
+                        pH: records[i * 5 + 2],
+                        aw: records[i * 5 + 3],
+                        flag: records[i * 5 + 4]
+                    };
+                    var x = cw * (parseFloat(item.Temp) - self.RangeMin) / (self.RangeMax - self.RangeMin);
+
+		             var data = [parseFloat(item.Temp), 50, 50];
+		             if( item.flag == "G" ) {
+		             	op.series[0].data.push(data);
+		             }else{
+		             	op.series[1].data.push(data);
+		             }
+                }
+
+                callback(op);
+            }
+        });
     },
-    init: function (id) {
-        this.updateChart();
-        console.log("TempBar: min=" + this.RangeMin + ", max=" + this.RangeMax);
-        var url = this.canvas.toDataURL();
-        var op = this.getScatterOption(id);
-        op.chart.plotBackgroundImage = url;
-        var scatter = new Highcharts.Chart(op);
+    init: function () {
+        console.log("TempBar: min=" + this.RangeMin + ", max=" + this.RangeMax +", pH=" + this.pH + ", aw=" + this.aw);
+    	var f = this.model.hasModel();
+    	var url;
+    	if( f ) {
+	        this.updateChart();
+	        url = this.canvas.toDataURL();
+	    }
+        this.getScatterOption(this.id, function(op){
+        	if( f ) op.chart.plotBackgroundImage = url;
+    	    var scatter = new Highcharts.Chart(op);
+        });
     }
 };
 

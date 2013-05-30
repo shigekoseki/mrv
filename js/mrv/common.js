@@ -296,11 +296,32 @@ var Screen = {
             fragment: 'foodmodel.html',
             title: '<h1 id="caption">Beef <small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'foodlst\')" class="back-button big page-back"></a>',
             init: function () {
+            	SqrtModel.setOrganismType(Status.Organism.id);
+            	SqrtModel.setFoodType(Status.Food.id);
                 var chart = new TempBar({
                     id: "home_left_chart",
-                    organismKey: "Ah",
-                    model: SqrtModel
+                    organismKey: Status.Organism.id,
+                    foodKey: Status.Food.id,
+                    model: SqrtModel,
+                    pH: 5,
+                    aw: 1,
+                    min: 0,
+                    max: 45
                 });
+                if( SqrtModel.hasModel() == false ){
+                	$("#condition-row").hide();
+                }else{
+				    $('#slider-aw').on('changed', function(e, val){
+	                	chart.aw = parseFloat(val)/100;
+	                	console.log('set aw to ' + chart.constValue);
+	                	chart.init();
+				    });
+				    $('#slider-ph').on('changed', function(e, val){
+	                	chart.pH = parseFloat(val)/10;
+	                	console.log('set pH to ' + chart.constValue);
+	                	chart.init();
+				    });
+				}
             }
         },
         {

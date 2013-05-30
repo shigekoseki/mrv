@@ -336,7 +336,8 @@ CultureMediumChart.prototype = {
 
                 //key, temp, pH, aw
                 var rawData = response["Culture_medium"]; //$.parseJSON(response)["Culture_medium"];
-                //console.log('loaded ' + rawData.length / 4 + ' records. (' + organismKey + ')');
+                rawData.pop();
+                //console.log('loaded ' + rawData.length / 5 + ' records. (' + organismKey + ')');
 
                 var rangex = self.getAxisRange(self.axisx);
                 var rangey = self.getAxisRange(self.axisy);
@@ -366,11 +367,11 @@ CultureMediumChart.prototype = {
                 var records = rawData;
                 for (var i = 0; i < count; i++) {
                     var item = {
-                        key: records[i * 4],
-                        Temp: records[i * 4 + 1],
-                        pH: records[i * 4 + 2],
-                        aw: records[i * 4 + 3],
-                        flag: records[i * 4 + 4]
+                        key: records[i * 5],
+                        Temp: records[i * 5 + 1],
+                        pH: records[i * 5 + 2],
+                        aw: records[i * 5 + 3],
+                        flag: records[i * 5 + 4]
                     };
                     var y = ch - (ch * (gety(item) - rangey.min) / (rangey.max - rangey.min));
                     var x = cw * (getx(item) - rangex.min) / (rangex.max - rangex.min);
