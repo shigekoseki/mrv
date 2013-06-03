@@ -308,6 +308,8 @@ CultureMediumChart.prototype = {
                                 'Alt: '+ event.altKey +'\n'+
                                 'Control: '+ event.ctrlKey +'\n'+
                                 'Shift: '+ event.shiftKey +'\n');*/
+                                Status.DataSetFilter = {aw:this.y, temp:this.x};
+                                console.log(Status.DataSetFilter);
                                 moveTo('datalist');
                             }
                         }
@@ -383,6 +385,8 @@ CultureMediumChart.prototype = {
 		             	op.series[1].data.push(data);
 		             }
                 }
+                
+				Status.DataSet = rawData;
 
                 callback(op);
             }

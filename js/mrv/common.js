@@ -522,7 +522,7 @@ function backFromDataList() {
     if( Status.Additive != undefined ) {
         moveTo('additivemodel');
     }else{
-        moveTo('foodlist');
+        moveTo('cmmodel');
     }
 }
 
