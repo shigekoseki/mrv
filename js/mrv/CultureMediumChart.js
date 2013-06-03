@@ -336,8 +336,7 @@ CultureMediumChart.prototype = {
 
                 //key, temp, pH, aw
                 var rawData = response["Culture_medium"]; //$.parseJSON(response)["Culture_medium"];
-                rawData.pop();
-                //console.log('loaded ' + rawData.length / 5 + ' records. (' + organismKey + ')');
+                console.log('loaded ' + rawData.length + ' records. (' + organismKey + ')');
 
                 var rangex = self.getAxisRange(self.axisx);
                 var rangey = self.getAxisRange(self.axisy);
@@ -363,21 +362,22 @@ CultureMediumChart.prototype = {
                 else if (self.axisy == CMAxis_aw) { gety = function (data) { return data.aw; }; }
                 else if (self.axisy == CMAxis_pH) { gety = function (data) { return data.pH; }; }
 
-                var count = rawData.length / 5;
+                var count = rawData.length;
                 var records = rawData;
                 for (var i = 0; i < count; i++) {
                     var item = {
-                        key: records[i * 5],
-                        Temp: records[i * 5 + 1],
-                        pH: records[i * 5 + 2],
-                        aw: records[i * 5 + 3],
-                        flag: records[i * 5 + 4]
+                        key: records[i][0],
+                        no: records[i][1],
+                        Temp: records[i][2],
+                        pH: records[i][3],
+                        aw: records[i][4],
+                        spec_rate: parseFloat(records[i][5])
                     };
                     var y = ch - (ch * (gety(item) - rangey.min) / (rangey.max - rangey.min));
                     var x = cw * (getx(item) - rangex.min) / (rangex.max - rangex.min);
 
 		             var data = [parseFloat(getx(item)), parseFloat(gety(item))];
-		             if( item.flag == "G" ) {
+		             if( item.spec_rate < 0  ) {
 		             	op.series[0].data.push(data);
 		             }else{
 		             	op.series[1].data.push(data);

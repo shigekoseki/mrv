@@ -1,2 +1,26 @@
 {
-"Culture_medium":["END"],"Beef":["END"],"Pork":["30807", "9.1","5.8","0.993","G","30808", "7.1","5.8","0.993","G","30809", "3.7","5.8","0.993","G","30810", "0.7","5.8","0.993","G","END"],"Poultry":["END"],"Sausage":["END"],"Meat_other":["END"],"Seafood":["END"],"Milk":["END"],"Cheese":["END"],"Dairy_other":["END"],"Egg":["END"],"Dessert":["END"],"Sauce/Dressing":["END"],"Produce":["END"],"Bread":["END"],"Infant_food":["END"],"Beverage":["END"],"Water":["END"],"Other/mix":["END"]}
+	"Culture_medium":[],
+	"Beef":[],
+	"Pork":[
+		["PA_21", "30807", "9.1","5.8","0.993","3.51998579101152E-02"],
+		["PA_22", "30808", "7.1","5.8","0.993","1.47678973738189E-02"],
+		["PA_23", "30809", "3.7","5.8","0.993","6.65961352997806E-03"],
+		["PA_24", "30810", "0.7","5.8","0.993","8.96161792525505E-03"]
+	],
+	"Poultry":[],
+	"Sausage":[],
+	"Meat_other":[],
+	"Seafood":[],
+	"Milk":[],
+	"Cheese":[],
+	"Dairy_other":[],
+	"Egg":[],
+	"Dessert":[],
+	"Sauce/Dressing":[],
+	"Produce":[],
+	"Bread":[],
+	"Infant_food":[],
+	"Beverage":[],
+	"Water":[],
+	"Other/mix":[]
+}

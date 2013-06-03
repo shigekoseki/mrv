@@ -236,7 +236,7 @@ TempBar.prototype = {
                 var rawData = response[key]; //$.parseJSON(response)["Culture_medium"];
                 rawData.pop();
                 console.log(rawData);
-                console.log('loaded ' + rawData.length / 5 + ' records. (' + organismKey + '-' + self.foodKey +')');
+                console.log('loaded ' + rawData.length + ' records. (' + organismKey + '-' + self.foodKey +')');
 
                 var left = 20.0;
                 var top = 10.0;
@@ -247,20 +247,21 @@ TempBar.prototype = {
                 op.xAxis.min = self.RangeMin;
                 op.xAxis.max = self.RangeMax;
 
-                var count = rawData.length / 5;
+                var count = rawData.length;
                 var records = rawData;
                 for (var i = 0; i < count; i++) {
                     var item = {
-                        key: records[i * 5],
-                        Temp: records[i * 5 + 1],
-                        pH: records[i * 5 + 2],
-                        aw: records[i * 5 + 3],
-                        flag: records[i * 5 + 4]
+                        key: records[i][0],
+                        no: records[i][1],
+                        Temp: records[i][2],
+                        pH: records[i][3],
+                        aw: records[i][4],
+                        spec_rate: parseFloat(records[i][5])
                     };
                     var x = cw * (parseFloat(item.Temp) - self.RangeMin) / (self.RangeMax - self.RangeMin);
 
 		             var data = [parseFloat(item.Temp), 50, 50];
-		             if( item.flag == "G" ) {
+		             if( item.spec_rate < 0  ) {
 		             	op.series[0].data.push(data);
 		             }else{
 		             	op.series[1].data.push(data);
