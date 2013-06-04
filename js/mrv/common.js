@@ -470,14 +470,11 @@ var Screen = {
                         },
                         xAxis: {
                             min: 0,
-                            max: 100,
-                            title: { text: "" }
+                            title: { text: "Hours elapsed" }
                         },
                         yAxis: {
-                            type: "logarithmic",
                             min: 1,
-                            max: 100000,
-                            title: { texts: "" }
+                            title: { text: "log10" }
                         },
                         title: {
                             text: ''
@@ -485,7 +482,7 @@ var Screen = {
                         series: [{
                             type: 'spline',
                             name: 'Regression Line',
-                            data: [[0, 1], [5, 100], [10, 10000], [20, 100000], [100, 100000]],
+                            data: [],
                             marker: {
                                 enabled: false
                             },
@@ -493,14 +490,6 @@ var Screen = {
                                 hover: {
                                     lineWidth: 0
                                 }
-                            },
-                            enableMouseTracking: false
-                        }, {
-                            type: 'scatter',
-                            name: 'Observations',
-                            data: [[0, 10], [5, 5000], [10, 5000], [20, 120000]],
-                            marker: {
-                                radius: 0
                             },
                             enableMouseTracking: false
                         }]
@@ -518,10 +507,20 @@ var Screen = {
                         var data = response[id % 100];
 		                console.log('Showing the master of key:' + data.key);
                         $("#detail-table-template").tmpl(data).appendTo("#detail-table-holder");
-
+                        if( data.logc != undefined ){
+	                        var hist = data.logc.split(";");
+	                        var l = hist.length / 2;
+	                        var data = Array();
+	                        for(var i = 0 ; i < l ; i++ ){
+	                        	data.push([parseFloat(hist[i*2]), parseFloat(hist[i*2+1])]);
+	                        }
+	                        console.log(data);
+	                        var op = getChartOption("detail-chart");
+	                        op.series[0].data = data;
+			                new Highcharts.Chart(op);
+			            }
                     }
                 });
-                new Highcharts.Chart(getChartOption("detail-chart"));
             }
         },
     ],
