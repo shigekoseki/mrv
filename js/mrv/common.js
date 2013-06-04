@@ -251,7 +251,21 @@ var Screen = {
                         }
                     });
                 }
-            }
+                
+		        $.ajax({
+		            url: 'data/index/' + Status.Organism.id + '.JSON',
+		            dataType: "json",
+		            disableCaching: false,
+		            success: function (response, opts) {
+	                    $('#food-group > a').each(function(){
+	                        var food = $(this).attr('data-food');
+	                        if( response[food] == undefined || response[food].length == 0 ) {
+	                            $(this).hide();
+	                        }
+	                    });
+		            }
+				});
+			}
         },
         {
             name: 'cmmodel',
