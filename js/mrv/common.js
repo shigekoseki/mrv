@@ -574,7 +574,7 @@ function moveTo(name) {
                 $('[data-role="button-set"]').each(function () {
                     $(this).ButtonSet();
                 })
-                $()["slider"]({ initAll: true });
+                $()["Slider"]({ initAll: true });
                 $.StartMenu();
                 //Show
                 $('#main-content')
