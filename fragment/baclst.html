@@ -1,8 +1,16 @@
 ﻿<script id="bacteria-list-template" type="text/x-jquery-tmpl">
     {%if picture%}
-        <div href="#" class="tile image" data-organism="${id}">
+    <div href="#" class="tile image" data-organism="${id}">
         <div class="tile-content">
             <img src="images/icons/${picture}" />
+        </div>
+        <div class="brand bg-color-blue">
+            <span class="name">${name}</span>'
+        </div>
+    </div>
+    {%else%}
+    <div href="#" class="tile" data-organism="${id}">
+        <div class="tile-content">
         </div>
         <div class="brand bg-color-blue">
             <span class="name">${name}</span>'

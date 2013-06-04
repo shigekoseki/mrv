@@ -83,27 +83,27 @@
             },
             picture:'(Lm)Listeria_monocytogenes.jpg', 
             title:'<h1>Listeria <small> monocytogenes/innocua</small></h1>'},
-		{id:'Mi', name:'micrococci', picture:'(Mi)Micrococci.png', title:'<h1>micrococci</h1>'},
-		{id:'Po', name:'Paenibacillus odorifer', picture:'(Po)Paenibacillus.jpg', title:'<h1>Paenibacillus <small> odorifer</small></h1>'},
-		{id:'Pp', name:'Photobacterium phosphoreum', title:'<h1>Photobacterium <small> phosphoreum</small></h1>'},
+		//{id:'Mi', name:'micrococci', picture:'(Mi)Micrococci.png', title:'<h1>micrococci</h1>'},
+		//{id:'Po', name:'Paenibacillus odorifer', picture:'(Po)Paenibacillus.jpg', title:'<h1>Paenibacillus <small> odorifer</small></h1>'},
+		//{id:'Pp', name:'Photobacterium phosphoreum', title:'<h1>Photobacterium <small> phosphoreum</small></h1>'},
 		{id:'Ps', name:'pseudomonads', picture:'(Ps)Pseudomonas.jpg', title:'<h1>pseudomonads</h1>'},
 		{id:'Psy', name:'psychrotrophic bacteria', picture:'(Psy)psychrotrophic bacteria.jpg', title:'<h1>psychrotrophic <small> bacteria</small></h1>'},
 		{id:'Sa', name:'Staphylococcus aureus', picture:'(Sa)Staphylococcus_aureus.jpg', title:'<h1>Staphylococcus <small> aureus</small></h1>'},
-		{id:'Sx', name:'Staphylococcus xylosus', title:'<h1>Staphylococcus <small> xylosus</small></h1>'},
+		//{id:'Sx', name:'Staphylococcus xylosus', title:'<h1>Staphylococcus <small> xylosus</small></h1>'},
 		{id:'Sf', name:'Shigella flexneri and relatives', picture:'(Sf)Shigella_flexneri.jpg', title:'<h1>Shigella <small> flexneri and relatives</small></h1>'},
 		{id:'Ss', name:'salmonella spp', picture:'(Ss)Salmonelle.jpg', title:'<h1>salmonella <small> spp</small></h1>'},
 		{id:'Ta', name:'aerobic total spoilage bacteria', title:'<h1>aerobic <small> total spoilage bacteria</small></h1>'},
 		{id:'Vs', name:'vibrio spp.', icture:'(Vs)Vibrio.jpg', title:'<h1>vibrio <small> spp.</small></h1>'},
 		{id:'Ye', name:'Yersinia enterocolitica', title:'<h1>Yersinia <small> enterocolitica</small></h1>'},
-		{id:'Sp', name:'Shewanella putrefaciens', picture:'(Sp)Shewanella.png', title:'<h1>Shewanella <small> putrefaciens</small></h1>'},
+		//{id:'Sp', name:'Shewanella putrefaciens', picture:'(Sp)Shewanella.png', title:'<h1>Shewanella <small> putrefaciens</small></h1>'},
 		{id:'Sy', name:'spoilage yeast', picture:'(Sy)Spoilage yeast.jpg', title:'<h1>spoilage <small> yeast</small></h1>'},
-		{id:'yeast', name:'yeast', title:'<h1>yeast</h1>'},
-		{id:'Entc', name:'Enterococci', title:'<h1>Enterococci</h1>'},
-		{id:'Bp', name:'Bacillus pumilus', title:'<h1>Bacillus <small> pumilus</small></h1>'},
-		{id:'Cn_Psy', name:'non-proteolytic psychrotrophic clostridia', title:'<h1>non-proteolytic <small> psychrotrophic clostridia</small></h1>'},
-		{id:'Ta_mould', name:'mould', title:'<h1>mould</h1>'},
-		{id:'Hb', name:'halophilic bacteria', picture:'(Hb)Halophilic.jpg', title:'<h1>halophilic <small> bacteria</small></h1>'},
-		{id:'Ppx', name:'Paenibacillus polymyxa', title:'<h1>Paenibacillus <small> polymyxa</small></h1>'}
+		//{id:'yeast', name:'yeast', title:'<h1>yeast</h1>'},
+		//{id:'Entc', name:'Enterococci', title:'<h1>Enterococci</h1>'},
+		//{id:'Bp', name:'Bacillus pumilus', title:'<h1>Bacillus <small> pumilus</small></h1>'},
+		//{id:'Cn_Psy', name:'non-proteolytic psychrotrophic clostridia', title:'<h1>non-proteolytic <small> psychrotrophic clostridia</small></h1>'},
+		//{id:'Ta_mould', name:'mould', title:'<h1>mould</h1>'},
+		//{id:'Hb', name:'halophilic bacteria', picture:'(Hb)Halophilic.jpg', title:'<h1>halophilic <small> bacteria</small></h1>'},
+		//{id:'Ppx', name:'Paenibacillus polymyxa', title:'<h1>Paenibacillus <small> polymyxa</small></h1>'}
 	],
     Food: [
         {id: 'Culture_medium', name:'Culture medium'},
@@ -321,6 +321,7 @@ var Screen = {
 			    });
                 $("#cm-button-aw").click(update_aw);
                 $("#cm-button-ph").click(update_ph);
+                update_ph();
                 Status.BackTo = 'cmmodel';
             }
         },
