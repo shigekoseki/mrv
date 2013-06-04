@@ -319,6 +319,7 @@ var Screen = {
 			    });
                 $("#cm-button-aw").click(update_aw);
                 $("#cm-button-ph").click(update_ph);
+                Status.BackTo = 'cmmodel';
             }
         },
         {
@@ -352,6 +353,7 @@ var Screen = {
 	                	chart.init();
 				    });
 				}
+                Status.BackTo = 'foodmodel';
             }
         },
         {
@@ -395,6 +397,7 @@ var Screen = {
                     constValue: 0.99
                 });
                 $("#chart-caption").html("" + Status.Cons + "ppm");
+                Status.BackTo = 'additivemodel';
             }
         },
         {
@@ -533,11 +536,7 @@ var Screen = {
 };
 
 function backFromDataList() {
-    if( Status.Additive != undefined ) {
-        moveTo('additivemodel');
-    }else{
-        moveTo('cmmodel');
-    }
+	moveTo(Status.BackTo);
 }
 
 function moveTo(name) {

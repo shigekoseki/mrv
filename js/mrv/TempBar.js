@@ -143,15 +143,6 @@ TempBar.prototype = {
         this.canvas.set({ width: this.width, height: this.height });
         this.updateChart();
     },
-    onRender: function (container, position) {
-        MRV.TempBar.superclass.onRender.apply(this, arguments);
-        //    	console.log('TempBar.onRender');
-        if (this.el) {
-            this.updateCanvas();
-        } else {
-            console.log(this);
-        }
-    },
     getScatterOption: function (container, callback) {
         var op = {
             chart: {
@@ -192,7 +183,23 @@ TempBar.prototype = {
             legend: {
                 enabled: false
             },
-
+            plotOptions: {
+                bubble: {
+                    point: {
+                        events: {
+                            click: function (event) {
+                                /*alert('[' + this.x +',' + this.y + '] clicked\n'+
+                                'Alt: '+ event.altKey +'\n'+
+                                'Control: '+ event.ctrlKey +'\n'+
+                                'Shift: '+ event.shiftKey +'\n');*/
+                                Status.DataSetFilter = {temp:this.x};
+                                console.log(Status.DataSetFilter);
+                                moveTo('datalist');
+                            }
+                        }
+                    }
+                }
+            },
             series: [{
                 data: [
                 ],
@@ -267,6 +274,8 @@ TempBar.prototype = {
 		             	op.series[1].data.push(data);
 		             }
                 }
+                
+				Status.DataSet = rawData;
 
                 callback(op);
             }
