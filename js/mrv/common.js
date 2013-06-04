@@ -508,13 +508,15 @@ var Screen = {
                     return chart;
                 };
                 var id = parseInt(Status.DataId);
-                var fileName = id - (id % 100);
+                console.log('Showing the master of id:' + Status.DataId);
+                var fileName = id - (id % 100) + 100;
                 $.ajax({
                     url: 'data/master/' + fileName + '.JSON',
                     success: function (msg) {
                         var response = $.parseJSON(msg);
                         if (response == null) response = msg;
                         var data = response[id % 100];
+		                console.log('Showing the master of key:' + data.key);
                         $("#detail-table-template").tmpl(data).appendTo("#detail-table-holder");
 
                     }
