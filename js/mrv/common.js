@@ -252,6 +252,7 @@ var Screen = {
                     });
                 }
                 
+                $('#food-group').hide();
 		        $.ajax({
 		            url: 'data/index/' + Status.Organism.id + '.JSON',
 		            dataType: "json",
@@ -263,6 +264,7 @@ var Screen = {
 	                            $(this).hide();
 	                        }
 	                    });
+		                $('#food-group').show();
 		            }
 				});
 			}
