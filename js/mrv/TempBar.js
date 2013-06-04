@@ -185,6 +185,7 @@ TempBar.prototype = {
             },
             plotOptions: {
                 bubble: {
+                	animation: false,
                     point: {
                         events: {
                             click: function (event) {

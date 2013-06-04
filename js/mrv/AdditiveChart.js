@@ -197,6 +197,7 @@ AdditiveChart.prototype = {
             },
             plotOptions: {
                 scatter: {
+                	animation: false,
                     marker: {
                         radius: 10,
                         states: {
@@ -216,10 +217,6 @@ AdditiveChart.prototype = {
                     point: {
                         events: {
                             click: function (event) {
-                                /*alert('[' + this.x +',' + this.y + '] clicked\n'+
-                                'Alt: '+ event.altKey +'\n'+
-                                'Control: '+ event.ctrlKey +'\n'+
-                                'Shift: '+ event.shiftKey +'\n');*/
                                 Status.DataSetFilter = {ph:this.y, temp:this.x};
                                 console.log(Status.DataSetFilter);
                                 moveTo('datalist');
@@ -253,8 +250,10 @@ AdditiveChart.prototype = {
         $.ajax({
             type: "GET",
             url: 'data/additive/' + Status.Organism.id + '_' + Status.Additive.id + '.JSON',
+            dataType: 'json',
             success: function(msg){
                 var response = $.parseJSON(msg);
+                if ( response == null) response = msg;
                 var getdata = function() {
                     var ret = undefined;
                     $.each(response.datasets, function (i, v) {

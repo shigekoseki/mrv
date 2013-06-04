@@ -200,7 +200,7 @@ var Status = {
     Cons: undefined,
     DataSet: undefined,
     DataSetFilter: undefined,
-    DataId: undefined
+    DataId: undefined,
 };
 
 var Screen = {
@@ -322,13 +322,14 @@ var Screen = {
                 $("#cm-button-aw").click(update_aw);
                 $("#cm-button-ph").click(update_ph);
                 update_ph();
+                update_aw();
                 Status.BackTo = 'cmmodel';
             }
         },
         {
             name: 'foodmodel',
             fragment: 'foodmodel.html',
-            title: '<h1 id="caption">Beef <small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'foodlst\')" class="back-button big page-back"></a>',
+            title: '<h1 id="caption">{Food-name} <small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'foodlst\')" class="back-button big page-back"></a>',
             init: function () {
             	SqrtModel.setOrganismType(Status.Organism.id);
             	SqrtModel.setFoodType(Status.Food.id.toLowerCase());
@@ -369,6 +370,7 @@ var Screen = {
                 $('#additive-description').html(Status.Additive.description + '(<a href="http://www.wikipedia.com/">Wikipedia</a>)');
                 $.ajax({
                     url: 'data/additive/' + Status.Organism.id + '_' + Status.Additive.id + '.JSON',
+                    dataType: 'json',
                     success: function(msg){
                         var response = $.parseJSON(msg);
                         if ( response == null) response = msg;
@@ -457,6 +459,7 @@ var Screen = {
                 var getChartOption = function (container) {
                     chart = {
                         chart: {
+                        	type: 'scatter',
                             renderTo: container,
                             spacingTop: 10,
                             spacingLeft: 0,
@@ -482,19 +485,14 @@ var Screen = {
                         title: {
                             text: ''
                         },
+                        plotOptions: {
+                        	scatter: {
+                        		animation: false
+                        	}
+                        },
                         series: [{
-                            type: 'spline',
-                            name: 'Regression Line',
-                            data: [],
-                            marker: {
-                                enabled: false
-                            },
-                            states: {
-                                hover: {
-                                    lineWidth: 0
-                                }
-                            },
-                            enableMouseTracking: false
+                        	name: 'growth',
+                            data: []
                         }]
                     };
                     return chart;

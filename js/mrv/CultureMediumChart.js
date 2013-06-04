@@ -285,6 +285,7 @@ CultureMediumChart.prototype = {
             },
             plotOptions: {
                 scatter: {
+                	animation: false,
                     marker: {
                         radius: 10,
                         states: {
