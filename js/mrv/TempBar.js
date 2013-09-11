@@ -69,8 +69,8 @@ TempBar.prototype = {
         if (this.canvas == undefined) {
             this.canvas = document.createElement('canvas');
             this.canvas.id = "CursorLayer";
-            this.canvas.width = 100;
-            this.canvas.height = 100;
+            this.canvas.width = 400;
+            this.canvas.height = 1;
             this.canvas.style.zIndex = 8;
             this.canvas.style.position = "absolute";
             this.canvas.style.border = "1px solid";

@@ -341,7 +341,7 @@ var Screen = {
                     pH: 5,
                     aw: 1,
                     min: 0,
-                    max: 45
+                    max: 40
                 });
                 if( SqrtModel.hasModel() == false ){
                 	$("#condition-row").hide();
