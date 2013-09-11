@@ -343,20 +343,6 @@ var Screen = {
                     min: 0,
                     max: 40
                 });
-                if( SqrtModel.hasModel() == false ){
-                	$("#condition-row").hide();
-                }else{
-				    $('#slider-aw').on('changed', function(e, val){
-	                	chart.aw = parseFloat(val)/100;
-	                	console.log('set aw to ' + chart.aw);
-	                	chart.init();
-				    });
-				    $('#slider-ph').on('changed', function(e, val){
-	                	chart.pH = parseFloat(val)/10;
-	                	console.log('set pH to ' + chart.pH);
-	                	chart.init();
-				    });
-				}
                 Status.BackTo = 'foodmodel';
             }
         },
