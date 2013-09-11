@@ -318,13 +318,13 @@ CultureMediumChart.prototype = {
                 }
             },
             series: [{
-                name: 'Growth',
-                color: 'rgb(223, 83, 83)',
+                name: 'NoGrowth',
+                color: 'rgb(119, 152, 191)',
                 data: []
 
             }, {
-                name: 'NoGrowth',
-                color: 'rgb(119, 152, 191)',
+                name: 'Growth',
+                color: 'rgb(223, 83, 83)',
                 data: []
             }]
         };

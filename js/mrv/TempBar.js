@@ -202,7 +202,7 @@ TempBar.prototype = {
                 }
             },
             series: [{
-                name: 'Growth',
+                name: 'NoGrowth',
                 data: [
                 ],
                 marker: {
@@ -215,10 +215,9 @@ TempBar.prototype = {
                     }
                 }
             }, {
-                name: 'NoGrowth',
+                name: 'Growth',
                 data: [
                 ],
-                color: 'rgba(170,70,67,0.5)',
                 marker: {
 
                     fillColor: {
