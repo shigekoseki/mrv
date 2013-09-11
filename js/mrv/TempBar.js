@@ -292,7 +292,7 @@ TempBar.prototype = {
 	    }
         this.getScatterOption(this.id, function(op){
         	if( f ) op.chart.plotBackgroundImage = url;
-    	    var scatter = new Highcharts.Chart(op);
+        	var scatter = new Highcharts.Chart(op);
         });
     }
 };

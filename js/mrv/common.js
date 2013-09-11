@@ -332,7 +332,7 @@ var Screen = {
             title: '<h1 id="caption">{Food-name} <small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'foodlst\')" class="back-button big page-back"></a>',
             init: function () {
             	SqrtModel.setOrganismType(Status.Organism.id);
-            	SqrtModel.setFoodType(Status.Food.id.toLowerCase());
+            	SqrtModel.setFoodType(Status.Food.id);
                 var chart = new TempBar({
                     id: "home_left_chart",
                     organismKey: Status.Organism.id,
@@ -348,12 +348,12 @@ var Screen = {
                 }else{
 				    $('#slider-aw').on('changed', function(e, val){
 	                	chart.aw = parseFloat(val)/100;
-	                	console.log('set aw to ' + chart.constValue);
+	                	console.log('set aw to ' + chart.aw);
 	                	chart.init();
 				    });
 				    $('#slider-ph').on('changed', function(e, val){
 	                	chart.pH = parseFloat(val)/10;
-	                	console.log('set pH to ' + chart.constValue);
+	                	console.log('set pH to ' + chart.pH);
 	                	chart.init();
 				    });
 				}
