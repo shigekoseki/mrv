@@ -208,7 +208,7 @@ var Screen = {
         {
             name: 'baclst',
             fragment: 'baclst.html',
-            title: '<h1>MRV<small>Microbial Responses Viewer</small></h1>',
+            title: '<img src="images/logo.png" height="50" style="margin-top:30px;margin-left:120px;"/>',
             init: function () {
                 $("#bacteria-list-template").tmpl(Master.Organism).appendTo("#bacteria-group");
                 $('#bacteria-group > div').click(function () {
