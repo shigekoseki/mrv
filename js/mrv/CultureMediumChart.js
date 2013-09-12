@@ -251,6 +251,7 @@ CultureMediumChart.prototype = {
         };
     },
     getScatterOption: function (container, callback) {
+        var self = this;
         var op = {
             chart: {
                 renderTo: container,
@@ -267,7 +268,7 @@ CultureMediumChart.prototype = {
             xAxis: {
                 title: {
                     enabled: true,
-                    text: '温度(℃)'
+                    text: 'temperature'
                 },
                 min: 0, max: 25,
                 startOnTick: true,
@@ -309,7 +310,12 @@ CultureMediumChart.prototype = {
                                 'Alt: '+ event.altKey +'\n'+
                                 'Control: '+ event.ctrlKey +'\n'+
                                 'Shift: '+ event.shiftKey +'\n');*/
-                                Status.DataSetFilter = {aw:this.y, temp:this.x};
+                                if (self.axisy == CMAxis_aw) {
+                                    Status.DataSetFilter = { aw: this.y, temp: this.x };
+                                }
+                                else if (self.axisy == CMAxis_pH) {
+                                    Status.DataSetFilter = { ph: this.y, temp: this.x };
+                                }
                                 console.log(Status.DataSetFilter);
                                 moveTo('datalist');
                             }
@@ -330,7 +336,6 @@ CultureMediumChart.prototype = {
         };
         
         var organismKey = this.organismKey;
-        var self = this;
         $.ajax({
             url: 'data/index/' + organismKey + '.JSON',
             dataType: "json",

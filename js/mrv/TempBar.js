@@ -193,6 +193,7 @@ TempBar.prototype = {
                                 'Alt: '+ event.altKey +'\n'+
                                 'Control: '+ event.ctrlKey +'\n'+
                                 'Shift: '+ event.shiftKey +'\n');*/
+                                Status.Cons = undefined;
                                 Status.DataSetFilter = {temp:this.x};
                                 console.log(Status.DataSetFilter);
                                 moveTo('datalist');

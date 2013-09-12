@@ -369,6 +369,7 @@ var Screen = {
                         $('#dataset-list > div').click(function(){
                             var cons = $(this).attr('data-cons');
                             Status.Cons = cons;
+                            console.log(cons);
                             moveTo('additivemodel');
                         });
                     }
@@ -420,18 +421,26 @@ var Screen = {
                         moveTo('detail');
                     });
 
-                    var filtertxt = "Spec_rates filtered by " + Status.Cons + " ppm";
+                    var filtertxt = "Spec_rates filtered by ";
+                    var fand = false;
+                    if (Status.Cons != undefined) {
+                        filtertxt += Status.Cons + " ppm";
+                        fand = true;
+                    }
                     if (Status.DataSetFilter.ph != undefined) {
-                        filtertxt += " and ";
+                        if( fand ) filtertxt += " and ";
                         filtertxt += ' pH:' + Status.DataSetFilter.ph;
+                        fand = true;
                     }
                     if (Status.DataSetFilter.temp != undefined) {
-                        filtertxt += " and ";
+                        if (fand) filtertxt += " and ";
                         filtertxt += ' Temp.:' + Status.DataSetFilter.temp;
+                        fand = true;
                     }
                     if (Status.DataSetFilter.aw != undefined) {
-                        filtertxt += " and ";
+                        if (fand) filtertxt += " and ";
                         filtertxt += ' aw:' + Status.DataSetFilter.aw;
+                        fand = true;
                     }
                     filtertxt += " (" + count + "/" + total + ")";
                     $("#datalist-caption").html(filtertxt);
@@ -491,7 +500,7 @@ var Screen = {
                     success: function (msg) {
                         var response = $.parseJSON(msg);
                         if (response == null) response = msg;
-                        var data = response[id % 100];
+                        var data = response[id % 100 - 1];
 		                console.log('Showing the master of key:' + data.key);
                         $("#detail-table-template").tmpl(data).appendTo("#detail-table-holder");
                         if( data.logc != undefined ){

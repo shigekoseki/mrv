@@ -163,6 +163,7 @@ AdditiveChart.prototype = {
         };
     },
     getScatterOption: function (container) {
+        var self = this;
         var op = {
             chart: {
                 renderTo: container,
@@ -218,7 +219,7 @@ AdditiveChart.prototype = {
                         events: {
                             click: function (event) {
                                 Status.DataSetFilter = {ph:this.y, temp:this.x};
-                                console.log(Status.DataSetFilter);
+                                console.log(Status);
                                 moveTo('datalist');
                             }
                         }
