@@ -275,13 +275,18 @@ var Screen = {
             title: '<h1>{Food-name}<small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'foodlst\')" class="back-button big page-back"></a>',
             init: function () {
             	PolynomialModel.setOrganismType(Status.Organism.id);
+                var growthcurve = new GrowthCurveChart({
+                	id: "growthcurve"
+                });
                 var chart = new CultureMediumChart({
                     id: "home_left_chart",
                     model: PolynomialModel,
                     organismKey: Status.Organism.id,
                     axisx: CMAxis_Temp,
                     axisy: CMAxis_aw,
-                    constValue: 5
+                    constValue: 5,
+                    indexDataPath: Conf.IndexDataPath,
+                    growthCurveChart: growthcurve,
                 });
                 var get_ph = function(){
                 	var val = parseFloat($('#slider-ph').data('value'));

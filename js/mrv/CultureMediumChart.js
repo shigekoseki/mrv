@@ -10,6 +10,8 @@ var CultureMediumChart = function (arg) {
         this.axisy = arg.axisy;
         this.constValue = arg.constValue;
         this.id = arg.id;
+        this.indexDataPath = arg.indexDataPath;
+        this.growthCurveChart = arg.growthCurveChart;
         this.init();
     }
 };
@@ -250,14 +252,33 @@ CultureMediumChart.prototype = {
             caption: caption
         };
     },
-    getScatterOption: function (container, callback) {
+    getScatterOption: function (container, growthCurveChart, callback) {
         var self = this;
         var op = {
             chart: {
                 renderTo: container,
                 type: 'scatter',
                 animation: false,
-                zoomType: 'none'
+                zoomType: 'none',
+                events:{
+                    click: function(event) {
+                    	if( growthCurveChart != undefined ){
+                    		var temp, ph, aw;
+	                        if (self.axisy == CMAxis_aw) {
+	                        	temp = event.xAxis[0].value;
+	                        	aw = event.yAxis[0].value;
+	                        	ph = self.constValue;
+	                        }
+	                        else if (self.axisy == CMAxis_pH) {
+	                        	temp = event.xAxis[0].value;
+	                        	aw = self.constValue;
+	                        	ph = event.yAxis[0].value;
+	                        }
+	                        var spec_rate = self.model.getMyuMax(temp, ph, aw);
+	                        growthCurveChart.update(spec_rate);
+		                }
+                    },
+                }
             },
             credits: {
                 enabled: false
@@ -336,8 +357,9 @@ CultureMediumChart.prototype = {
         };
         
         var organismKey = this.organismKey;
+        var indexDataPath = this.indexDataPath;
         $.ajax({
-            url: 'data/index/' + organismKey + '.JSON',
+            url: indexDataPath + organismKey + '.JSON',
             dataType: "json",
             disableCaching: false,
             success: function (response, opts) {
@@ -405,7 +427,7 @@ CultureMediumChart.prototype = {
 	        this.updateChart();
 	        url = this.canvas.toDataURL();
 	    }
-        this.getScatterOption(this.id, function(op){
+        this.getScatterOption(this.id, this.growthCurveChart, function(op){
         	if( f ) op.chart.plotBackgroundImage = url;
     	    var scatter = new Highcharts.Chart(op);
         });
