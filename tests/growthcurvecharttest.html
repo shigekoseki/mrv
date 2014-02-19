@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/modern.css" rel="stylesheet">
+    <link href="../css/modern-responsive.css" rel="stylesheet">
+
+    <script src="../js/jquery-1.8.2.min.js" type="text/javascript"></script>
+    <script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script>
+
+    <script src="../js/metroui/tile-slider.js" type="text/javascript"></script>
+    <script src="../js/metroui/start-menu.js" type="text/javascript"></script>
+    <script src="../js/metroui/slider.js" type="text/javascript"></script>
+    <script src="../js/metroui/buttonset.js" type="text/javascript"></script>
+
+    <script src="../js/hc/highcharts.js" type="text/javascript"></script>
+    <script src="../js/hc/highcharts-more.js" type="text/javascript"></script>
+
+    <script src="../js/mrv/PolynomialModel.js" type="text/javascript"></script>
+    <script src="../js/mrv/GrowthCurveChart.js" type="text/javascript"></script>
+    <script src="../js/mrv/common.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+    	var chart1;
+        $(document).ready(function () {
+            document.ontouchmove = function (event) {
+                //event.preventDefault();
+            }
+            document.onorientationchange = function (event) {
+                event.preventDefault();
+            }
+            
+            chart1 = new GrowthCurveChart({
+                id: "chart1",
+            });
+        });
+    </script>
+</head>
+<body class="metrouicss">
+
+<div class="page secondary fixed-header">
+
+	<div class="page-header" style="background-color:purple;">
+            <div id="header-content" class="page-header-content">
+            </div>
+    </div>
+
+	<div id="main-content" class="page-region">
+    <div class="page-region-content">
+        <h2 id="chart-caption">GrowthCurveChartTest</h2>
+        
+		<div id="chart1" style="width:400px; height:150px;"></div>
+		<br/>
+		spec_rate: <input id="spec_rate" type="text" value="0.5"/>
+		<br/>
+		<button onclick="javascript:chart1.show();">call show()</button>
+		<button onclick="javascript:chart1.hide();">call hide()</button>
+		<button onclick="javascript:chart1.update($('#spec_rate').val());">call update()</button>
+		<br/>
+		<br/>
+	</div>
+    </div>
+</div>
+
+</body>
+</html>
