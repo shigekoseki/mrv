@@ -386,7 +386,9 @@ var Screen = {
                     organismKey: "Ah",
                     axisx: CMAxis_pH,
                     axisy: CMAxis_Temp,
-                    constValue: 0.99
+                    constValue: 0.99,
+                    indexDataPath: Conf.IndexDataPath,
+                    additiveDataPath: Conf.AdditiveDataPath,
                 });
                 $("#chart-caption").html("" + Status.Cons + "ppm");
                 Status.BackTo = 'additivemodel';
@@ -494,9 +496,10 @@ var Screen = {
                 };
                 var id = parseInt(Status.DataId);
                 console.log('Showing the master of id:' + Status.DataId);
+                var masterDataPath = Conf.MasterDataPath;
                 var fileName = id - (id % 100) + 100;
                 $.ajax({
-                    url: 'data/master/' + fileName + '.JSON',
+                    url: masterDataPath + fileName + '.JSON',
                     success: function (msg) {
                         var response = $.parseJSON(msg);
                         if (response == null) response = msg;
@@ -536,6 +539,29 @@ function backFromDataList() {
 	moveTo(Status.BackTo);
 }
 
+var Conf = {
+	FragmentPath: 'fragment/',
+	IndexDataPath: 'data/index/',
+	AdditiveDataPath: 'data/additive/',
+	MasterDataPath: 'data/master/',
+};
+
+function setFragmentPath(path){
+	Conf.FragmentPath = path;
+}
+
+function setIndexDataPath(path){
+	Conf.IndexDataPath = path;
+}
+
+function setAdditiveDataPath(path){
+	Conf.AdditiveDataPath = path;
+}
+
+function setMasterDataPath(path){
+	Conf.MasterDataPath = path;
+}
+
 function moveTo(name) {
     console.log('moveTo ' + name);
     var sc = Screen.findScreen(name);
@@ -558,7 +584,7 @@ function moveTo(name) {
     $('#main-content').fadeOut('fast', function(){
         $('#main-content')
             .html("")
-            .load('fragment/' + sc.fragment, function () {
+	        .load(Conf.FragmentPath + sc.fragment, function () {
                 //Screen init
                 if (sc.init != undefined) sc.init();
                 //For reconstruct visual tree

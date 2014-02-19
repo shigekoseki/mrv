@@ -8,6 +8,8 @@ var AdditiveChart = function (arg) {
         this.axisx = arg.axisx;
         this.axisy = arg.axisy;
         this.constValue = arg.constValue;
+        this.indexDataPath = arg.indexDataPath;
+        this.additiveDataPath = arg.additiveDataPath;
         this.init(arg.id);
     }
 };
@@ -66,14 +68,17 @@ AdditiveChart.prototype = {
     OverColorSet: [0xFFFFFF],
     MainRangeMin: 0.0,
     MainRangeMax: 0.5,
+    indexDataPath: 'data/index/',
+    additiveDataPath: 'data/additive/',
     updateChart: function () {
         var w = this.getChartWidth();
         var h = this.getChartHeight();
 
         var organismKey = this.organismKey;
+        var indexDataPath = this.indexDataPath;
         var self = this;
         $.ajax({
-            url: 'data/index/' + organismKey + '.json',
+            url: indexDataPath + organismKey + '.json',
             disableCaching: false,
             success: function (msg, opts) {
 
@@ -248,9 +253,10 @@ AdditiveChart.prototype = {
         };
         var ax = getIndex(this.axisx);
         var ay = getIndex(this.axisy);
+        var additivePath = this.additiveDataPath;
         $.ajax({
             type: "GET",
-            url: 'data/additive/' + Status.Organism.id + '_' + Status.Additive.id + '.JSON',
+            url: additivePath + Status.Organism.id + '_' + Status.Additive.id + '.JSON',
             dataType: 'json',
             success: function(msg){
                 var response = $.parseJSON(msg);
