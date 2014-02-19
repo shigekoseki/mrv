@@ -453,47 +453,6 @@ var Screen = {
             fragment: 'detail.html',
             title: '<h1 id="caption">{Additive-name}{Food-name}<small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'datalist\')" class="back-button big page-back"></a>',
             init: function () {
-                var getChartOption = function (container) {
-                    chart = {
-                        chart: {
-                        	type: 'scatter',
-                            renderTo: container,
-                            spacingTop: 10,
-                            spacingLeft: 0,
-                            spacingBottom: 0
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        exporting: {
-                            enabled: false
-                        },
-                        legend: {
-                            enabled: false
-                        },
-                        xAxis: {
-                            min: 0,
-                            title: { text: "Hours elapsed" }
-                        },
-                        yAxis: {
-                            min: 1,
-                            title: { text: "log10" }
-                        },
-                        title: {
-                            text: ''
-                        },
-                        plotOptions: {
-                        	scatter: {
-                        		animation: false
-                        	}
-                        },
-                        series: [{
-                        	name: 'growth',
-                            data: []
-                        }]
-                    };
-                    return chart;
-                };
                 var id = parseInt(Status.DataId);
                 console.log('Showing the master of id:' + Status.DataId);
                 var masterDataPath = Conf.MasterDataPath;
@@ -506,18 +465,7 @@ var Screen = {
                         var data = response[id % 100 - 1];
 		                console.log('Showing the master of key:' + data.key);
                         $("#detail-table-template").tmpl(data).appendTo("#detail-table-holder");
-                        if( data.logc != undefined ){
-	                        var hist = data.logc.split(";");
-	                        var l = hist.length / 2;
-	                        var data = Array();
-	                        for(var i = 0 ; i < l ; i++ ){
-	                        	data.push([parseFloat(hist[i*2]), parseFloat(hist[i*2+1])]);
-	                        }
-	                        console.log(data);
-	                        var op = getChartOption("detail-chart");
-	                        op.series[0].data = data;
-			                new Highcharts.Chart(op);
-			            }
+                        new RecordChart({id:"detail-chart", masterData:data});
                     }
                 });
             }
