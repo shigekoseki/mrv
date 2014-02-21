@@ -231,13 +231,13 @@ CultureMediumChart.prototype = {
                 min = 0;
                 max = 40.0;
                 d = 5.0;
-                caption = '温度(℃)';
+                caption = 'Temperature (℃)';
                 break;
             case CMAxis_aw:
                 min = 0.9;
                 max = 1.0;
                 d = 0.01;
-                caption = '水分活性';
+                caption = 'Water activity (aw)';
                 break;
             case CMAxis_pH:
                 min = 3.0;
