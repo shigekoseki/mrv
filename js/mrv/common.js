@@ -287,6 +287,13 @@ var Screen = {
                     constValue: 5,
                     indexDataPath: Conf.IndexDataPath,
                     growthCurveChart: growthcurve,
+                    statusId: {
+                    	panel: "growthcurve-area",
+                    	ph: "growthcurve-ph",
+                    	aw: "growthcurve-aw",
+                    	temp: "growthcurve-temp",
+                    	spec_rate: "growthcurve-specrate"
+                    }
                 });
                 var get_ph = function(){
                 	var val = parseFloat($('#slider-ph').data('value'));
