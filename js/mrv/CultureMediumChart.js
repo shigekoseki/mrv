@@ -277,10 +277,10 @@ CultureMediumChart.prototype = {
 	                        }
 	                        var spec_rate = self.model.getMyuMax(temp, ph, aw);
 	                        growthCurveChart.update(spec_rate);
-	                        $("#"+self.statusId.ph).text(Math.round(ph*1000)/1000);
-	                        $("#"+self.statusId.aw).text(Math.round(aw*1000)/1000);
-	                        $("#"+self.statusId.temp).text(Math.round(temp*1000)/1000);
-	                        $("#"+self.statusId.spec_rate).text(Math.round(spec_rate*1000)/1000);
+	                        $("#"+self.statusId.ph).text(ph.toFixed(1));
+	                        $("#"+self.statusId.aw).text(aw.toFixed(3));
+	                        $("#"+self.statusId.temp).text(temp.toFixed(1));
+	                        $("#"+self.statusId.spec_rate).text(spec_rate.toFixed(3));
 	                        $("#"+self.statusId.panel).show();
 		                }
                     },
