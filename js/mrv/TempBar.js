@@ -148,6 +148,10 @@ TempBar.prototype = {
     },
     getScatterOption: function (container, callback) {
         var self = this;
+        var mySize = '20%';
+		if(/(iPhone|iPad|iPod|Android)/.test(navigator.userAgent)) {
+		    mySize = '50%';
+		}
         var op = {
             chart: {
                 renderTo: container,
@@ -207,7 +211,7 @@ TempBar.prototype = {
             plotOptions: {
                 bubble: {
                 	animation: false,
-                	maxSize: '50%',
+                	maxSize: mySize,
                     point: {
                         events: {
                             click: function (event) {
@@ -318,14 +322,6 @@ TempBar.prototype = {
         	if( f ) op.chart.plotBackgroundImage = url;
         	self.bubble = new Highcharts.Chart(op);
         });
-		window.onmousemove = function() {
-		    self.hasMouse = true;
-		    var op = self.bubble.options;
-		    self.bubble.destroy();
-		    op.plotOptions.bubble.maxSize = '20%';
-    	    self.bubble = new Highcharts.Chart(op);
-		    console.log("redraw");
-		}
     }
 };
 

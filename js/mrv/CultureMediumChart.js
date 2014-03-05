@@ -23,7 +23,6 @@ CultureMediumChart.prototype = {
     axisy: CMAxis_pH,
     axisFontSize: 9.0,
     constValue: 0.0,
-    hasMouse: false,
     MainColorSet: [
             0x4C00FFFF, 0x4900FFFF, 0x4500FFFF, 0x4200FFFF, 0x3E00FFFF, 0x3B00FFFF,
             0x3700FFFF, 0x3300FFFF, 0x3000FFFF, 0x2C00FFFF, 0x2800FFFF, 0x2500FFFF,
@@ -256,6 +255,10 @@ CultureMediumChart.prototype = {
     },
     getScatterOption: function (container, growthCurveChart, callback) {
         var self = this;
+        var myRadius = 5;
+		if(/(iPhone|iPad|iPod|Android)/.test(navigator.userAgent)) {
+		    myRadius = 10;
+		}
         var op = {
             chart: {
                 renderTo: container,
@@ -317,7 +320,7 @@ CultureMediumChart.prototype = {
                 scatter: {
                 	animation: false,
                     marker: {
-                        radius: self.hasMouse ? 5 : 10,
+                        radius: myRadius,
                         states: {
                             hover: {
                                 enabled: true,
@@ -455,13 +458,5 @@ CultureMediumChart.prototype = {
         	if( f ) op.chart.plotBackgroundImage = url;
     	    self.scatter = new Highcharts.Chart(op);
         });
-		window.onmousemove = function() {
-		    self.hasMouse = true;
-		    var op = self.scatter.options;
-		    self.scatter.destroy();
-		    op.plotOptions.scatter.marker.radius = 5;
-    	    self.scatter = new Highcharts.Chart(op);
-		    console.log("redraw");
-		}
     }
 };
