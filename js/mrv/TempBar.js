@@ -207,6 +207,7 @@ TempBar.prototype = {
             plotOptions: {
                 bubble: {
                 	animation: false,
+                	maxSize: '50%',
                     point: {
                         events: {
                             click: function (event) {
@@ -241,7 +242,6 @@ TempBar.prototype = {
                 data: [
                 ],
                 marker: {
-
                     fillColor: {
                         radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
                         stops: [
@@ -306,6 +306,7 @@ TempBar.prototype = {
         });
     },
     init: function () {
+    	var self = this;
         console.log("TempBar: min=" + this.RangeMin + ", max=" + this.RangeMax +", pH=" + this.pH + ", aw=" + this.aw);
     	var f = this.model.hasModel();
     	var url;
@@ -315,8 +316,16 @@ TempBar.prototype = {
 	    }
         this.getScatterOption(this.id, function(op){
         	if( f ) op.chart.plotBackgroundImage = url;
-        	var scatter = new Highcharts.Chart(op);
+        	self.bubble = new Highcharts.Chart(op);
         });
+		window.onmousemove = function() {
+		    self.hasMouse = true;
+		    var op = self.bubble.options;
+		    self.bubble.destroy();
+		    op.plotOptions.bubble.maxSize = '20%';
+    	    self.bubble = new Highcharts.Chart(op);
+		    console.log("redraw");
+		}
     }
 };
 

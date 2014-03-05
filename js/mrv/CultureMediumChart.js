@@ -23,6 +23,7 @@ CultureMediumChart.prototype = {
     axisy: CMAxis_pH,
     axisFontSize: 9.0,
     constValue: 0.0,
+    hasMouse: false,
     MainColorSet: [
             0x4C00FFFF, 0x4900FFFF, 0x4500FFFF, 0x4200FFFF, 0x3E00FFFF, 0x3B00FFFF,
             0x3700FFFF, 0x3300FFFF, 0x3000FFFF, 0x2C00FFFF, 0x2800FFFF, 0x2500FFFF,
@@ -261,6 +262,7 @@ CultureMediumChart.prototype = {
                 type: 'scatter',
                 animation: false,
                 zoomType: 'none',
+                plotBorderWidth: 1,
                 events:{
                     click: function(event) {
                     	if( growthCurveChart != undefined ){
@@ -315,7 +317,7 @@ CultureMediumChart.prototype = {
                 scatter: {
                 	animation: false,
                     marker: {
-                        radius: 10,
+                        radius: self.hasMouse ? 5 : 10,
                         states: {
                             hover: {
                                 enabled: true,
@@ -352,13 +354,28 @@ CultureMediumChart.prototype = {
             },
             series: [{
                 name: 'NoGrowth',
-                color: 'rgb(119, 152, 191)',
-                data: []
-
+                data: [],
+                marker: {
+                    fillColor: {
+                        radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                        stops: [
+                             [0, 'rgba(255,255,255,0.5)'],
+                             [1, 'rgba(69,114,167,0.5)']
+                         ]
+                    }
+                }
             }, {
                 name: 'Growth',
-                color: 'rgb(223, 83, 83)',
-                data: []
+                data: [],
+                marker: {
+                    fillColor: {
+                        radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                        stops: [
+                             [0, 'rgba(255,255,255,0.5)'],
+                             [1, 'rgba(170,70,67,0.5)']
+                         ]
+                    }
+                }
             }]
         };
         
@@ -427,6 +444,7 @@ CultureMediumChart.prototype = {
         });
     },
     init: function() {
+		var self = this;
     	var f = this.model.hasModel();
     	var url;
     	if( f ) {
@@ -435,7 +453,15 @@ CultureMediumChart.prototype = {
 	    }
         this.getScatterOption(this.id, this.growthCurveChart, function(op){
         	if( f ) op.chart.plotBackgroundImage = url;
-    	    var scatter = new Highcharts.Chart(op);
+    	    self.scatter = new Highcharts.Chart(op);
         });
+		window.onmousemove = function() {
+		    self.hasMouse = true;
+		    var op = self.scatter.options;
+		    self.scatter.destroy();
+		    op.plotOptions.scatter.marker.radius = 5;
+    	    self.scatter = new Highcharts.Chart(op);
+		    console.log("redraw");
+		}
     }
 };
