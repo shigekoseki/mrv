@@ -345,6 +345,9 @@ var Screen = {
             init: function () {
             	SqrtModel.setOrganismType(Status.Organism.id);
             	SqrtModel.setFoodType(Status.Food.id);
+                var growthcurve = new GrowthCurveChart({
+                	id: "growthcurve"
+                });
                 var chart = new TempBar({
                     id: "home_left_chart",
                     organismKey: Status.Organism.id,
@@ -353,7 +356,14 @@ var Screen = {
                     pH: 5,
                     aw: 1,
                     min: 0,
-                    max: 40
+                    max: 40,
+                    indexDataPath: Conf.IndexDataPath,
+                    growthCurveChart: growthcurve,
+                    statusId: {
+                    	panel: "growthcurve-area",
+                    	temp: "growthcurve-temp",
+                    	spec_rate: "growthcurve-specrate"
+                    }
                 });
                 Status.BackTo = 'foodmodel';
             }

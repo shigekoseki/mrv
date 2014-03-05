@@ -9,6 +9,9 @@ var TempBar = function (arg) {
         this.aw = arg.aw;
         this.RangeMax = arg.max;
         this.RangeMin = arg.min;
+        this.indexDataPath = arg.indexDataPath;
+        this.growthCurveChart = arg.growthCurveChart;
+        this.statusId = arg.statusId;
         this.init();
     }
 };
@@ -144,12 +147,30 @@ TempBar.prototype = {
         this.updateChart();
     },
     getScatterOption: function (container, callback) {
+        var self = this;
         var op = {
             chart: {
                 renderTo: container,
                 type: 'bubble',
                 plotBorderWidth: 1,
-                zoomType: 'none'
+                zoomType: 'none',
+                events:{
+                    click: function(event) {
+                    	if( self.growthCurveChart != undefined ){
+                    		var temp, ph, aw;
+                        	temp = event.xAxis[0].value;
+                    		ph = self.pH;
+                    		aw = self.aw;
+	                        var spec_rate = self.model.getMyuMax(temp, ph, aw);
+	                        self.growthCurveChart.update(spec_rate);
+	                        $("#"+self.statusId.ph).text(ph.toFixed(1));
+	                        $("#"+self.statusId.aw).text(aw.toFixed(3));
+	                        $("#"+self.statusId.temp).text(temp.toFixed(1));
+	                        $("#"+self.statusId.spec_rate).text(spec_rate.toFixed(3));
+	                        $("#"+self.statusId.panel).show();
+		                }
+                    },
+                }
             },
             credits: {
                 enabled: false
@@ -236,7 +257,7 @@ TempBar.prototype = {
         var organismKey = this.organismKey;
         var self = this;
         $.ajax({
-            url: 'data/index/' + organismKey + '.JSON',
+            url: self.indexDataPath + organismKey + '.JSON',
             dataType: "json",
             disableCaching: false,
             success: function (response, opts) {

@@ -42,6 +42,10 @@ GrowthCurveChart.prototype = {
                 		}
                 	}
                 },
+                tooltip: {
+                	headerFormat: '',
+					pointFormat: 'Time (h): {point.x:,.0f}<br/>log CFU/g: {point.y:,.3f}'
+                },
                 series: [{
                 	name: 'growth',
                     data: []
