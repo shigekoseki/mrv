@@ -295,6 +295,7 @@ var Screen = {
                     	spec_rate: "growthcurve-specrate"
                     }
                 });
+                var init = false;
                 var get_ph = function(){
                 	var val = parseFloat($('#slider-ph').data('value'));
                 	if( isNaN(val) ) return 5;
@@ -309,7 +310,7 @@ var Screen = {
                 	chart.axisy = CMAxis_aw;
                 	chart.constValue = get_ph();
                 	console.log('set pH to ' + chart.constValue);
-                	chart.init();
+                	if(init)chart.init();
                 	$("#slider-row-aw").hide();
                 	$("#slider-row-ph").show();
                 };
@@ -317,24 +318,26 @@ var Screen = {
                 	chart.axisy = CMAxis_pH;
                 	chart.constValue = get_aw();
                 	console.log('set aw to ' + chart.constValue);
-                	chart.init();
+                	if(init)chart.init();
                 	$("#slider-row-aw").show();
                 	$("#slider-row-ph").hide();
                 };
 			    $('#slider-aw').on('changed', function(e, val){
                 	chart.constValue = parseFloat(val)/100;
                 	console.log('set aw to ' + chart.constValue);
-                	chart.init();
+                	if(init)chart.init();
 			    });
 			    $('#slider-ph').on('changed', function(e, val){
                 	chart.constValue = parseFloat(val)/10;
                 	console.log('set pH to ' + chart.constValue);
-                	chart.init();
+                	if(init)chart.init();
 			    });
                 $("#cm-button-aw").click(update_aw);
                 $("#cm-button-ph").click(update_ph);
                 update_ph();
                 update_aw();
+                chart.init();
+                init = true;
                 Status.BackTo = 'cmmodel';
             }
         },

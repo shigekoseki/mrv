@@ -217,6 +217,7 @@ CultureMediumChart.prototype = {
                 }
             }
         }
+        console.log("drawGraph");
     },
     //end of drawGraph
 
@@ -357,27 +358,17 @@ CultureMediumChart.prototype = {
             },
             series: [{
                 name: 'NoGrowth',
+            	color: 'rgb(119, 152, 191)',
                 data: [],
                 marker: {
-                    fillColor: {
-                        radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
-                        stops: [
-                             [0, 'rgba(255,255,255,0.5)'],
-                             [1, 'rgba(69,114,167,0.5)']
-                         ]
-                    }
+                    symbol: 'circle',
                 }
             }, {
                 name: 'Growth',
                 data: [],
+            	color: 'rgb(223, 83, 83)',
                 marker: {
-                    fillColor: {
-                        radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
-                        stops: [
-                             [0, 'rgba(255,255,255,0.5)'],
-                             [1, 'rgba(170,70,67,0.5)']
-                         ]
-                    }
+                    symbol: 'diamond',
                 }
             }]
         };

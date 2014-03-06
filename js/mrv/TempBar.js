@@ -148,14 +148,14 @@ TempBar.prototype = {
     },
     getScatterOption: function (container, callback) {
         var self = this;
-        var mySize = '20%';
+        var myRadius = 10;
 		if(/(iPhone|iPad|iPod|Android)/.test(navigator.userAgent)) {
-		    mySize = '50%';
+		    myRadius = 30;
 		}
         var op = {
             chart: {
                 renderTo: container,
-                type: 'bubble',
+                type: 'scatter',
                 plotBorderWidth: 1,
                 zoomType: 'none',
                 events:{
@@ -209,9 +209,24 @@ TempBar.prototype = {
                 enabled: false
             },
             plotOptions: {
-                bubble: {
+                scatter: {
                 	animation: false,
-                	maxSize: mySize,
+                    marker: {
+                        radius: myRadius,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        },
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
                     point: {
                         events: {
                             click: function (event) {
@@ -230,29 +245,19 @@ TempBar.prototype = {
             },
             series: [{
                 name: 'NoGrowth',
+            	color: 'rgb(119, 152, 191)',
                 data: [
                 ],
                 marker: {
-                    fillColor: {
-                        radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
-                        stops: [
-                             [0, 'rgba(255,255,255,0.5)'],
-                             [1, 'rgba(69,114,167,0.5)']
-                         ]
-                    }
+                    symbol: 'circle',
                 }
             }, {
                 name: 'Growth',
                 data: [
                 ],
+            	color: 'rgb(223, 83, 83)',
                 marker: {
-                    fillColor: {
-                        radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
-                        stops: [
-                             [0, 'rgba(255,255,255,0.5)'],
-                             [1, 'rgba(170,70,67,0.5)']
-                         ]
-                    }
+                    symbol: 'diamond',
                 }
             }]
         };
