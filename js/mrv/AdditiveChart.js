@@ -185,7 +185,7 @@ AdditiveChart.prototype = {
             xAxis: {
                 title: {
                     enabled: true,
-                    text: '温度(℃)'
+                    text: 'Temperature(℃)'
                 },
                 min: 0, max: 10,
                 startOnTick: true,
