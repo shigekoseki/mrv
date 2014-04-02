@@ -493,6 +493,7 @@ var Screen = {
                         var response = $.parseJSON(msg);
                         if (response == null) response = msg;
                         var data = response[id % 100 - 1];
+                        if( data.spec_rate ) data.spec_rate = parseFloat(data.spec_rate).toFixed(3);
 		                console.log('Showing the master of key:' + data.key);
                         $("#detail-table-template").tmpl(data).appendTo("#detail-table-holder");
                         new RecordChart({id:"detail-chart", masterData:data});
