@@ -332,10 +332,15 @@ var Screen = {
                 	console.log('set pH to ' + chart.constValue);
                 	if(init)chart.init();
 			    });
-                $("#cm-button-aw").click(update_aw);
-                $("#cm-button-ph").click(update_ph);
-                update_ph();
-                update_aw();
+			    if( PolynomialModel.hasModel() ){
+	                $("#cm-button-aw").click(update_aw);
+	                $("#cm-button-ph").click(update_ph);
+	                update_ph();
+	                update_aw();
+			    }else{
+                	$("#slider-row-aw").hide();
+                	$("#slider-row-ph").hide();
+			    }
                 chart.init();
                 init = true;
                 Status.BackTo = 'cmmodel';
