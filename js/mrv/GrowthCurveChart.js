@@ -26,10 +26,10 @@ GrowthCurveChart.prototype = {
                 },
                 xAxis: {
                     min: 0,
-                    title: { text: "Hours elapsed" }
+	                title: { text: "Hours elapsed (h)" }
                 },
                 yAxis: {
-                    title: { text: "log10" }
+					title: { text: "log 10 CFU/g" }
                 },
                 title: {
                     text: ''
