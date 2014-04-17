@@ -275,7 +275,7 @@ var Screen = {
             title: '<h1>{Food-name}<small>{Organism-name}</small></h1><a href="#" onclick="moveTo(\'foodlst\')" class="back-button big page-back"></a>',
             init: function () {
             	PolynomialModel.setOrganismType(Status.Organism.id);
-                var growthcurve = new GrowthCurveChart({
+                var growthcurve = new RecordChart({
                 	id: "growthcurve"
                 });
                 var chart = new CultureMediumChart({
