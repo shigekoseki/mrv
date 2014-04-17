@@ -297,46 +297,59 @@ var Screen = {
                 });
                 var init = false;
                 var get_ph = function(){
-                	var val = parseFloat($('#slider-ph').data('value'));
+                	var val = parseFloat($('button.phbtn.active').attr('data-param'));
                 	if( isNaN(val) ) return 5;
-                	return val/10;
+                	return val;
                 };
                 var get_aw = function(){
-                	var val = parseFloat($('#slider-aw').data('value'));
+                	var val = parseFloat($('button.awbtn.active').attr('data-param'));
                 	if( isNaN(val) ) return 1;
-                	return val/100;
+                	return val;
                 };
-                var update_aw = function(){
+                var update_ph = function(){
                 	chart.axisy = CMAxis_aw;
                 	chart.constValue = get_ph();
+                	chart.constError = 0.5;
                 	console.log('set pH to ' + chart.constValue);
                 	if(init)chart.init();
                 	$("#slider-row-aw").hide();
                 	$("#slider-row-ph").show();
                 };
-                var update_ph = function(){
+                var update_aw = function(){
                 	chart.axisy = CMAxis_pH;
                 	chart.constValue = get_aw();
+                	chart.constError = 0.05;
                 	console.log('set aw to ' + chart.constValue);
                 	if(init)chart.init();
                 	$("#slider-row-aw").show();
                 	$("#slider-row-ph").hide();
                 };
-			    $('#slider-aw').on('changed', function(e, val){
-                	chart.constValue = parseFloat(val)/100;
+                $("button.awbtn").on('click',function(e, val){
+                	chart.constValue = parseFloat($(e.target).attr('data-param'));
                 	console.log('set aw to ' + chart.constValue);
                 	if(init)chart.init();
-			    });
-			    $('#slider-ph').on('changed', function(e, val){
-                	chart.constValue = parseFloat(val)/10;
+                });
+                $("button.phbtn").on('click',function(e, val){
+                	chart.constValue = parseFloat($(e.target).attr('data-param'));
                 	console.log('set pH to ' + chart.constValue);
                 	if(init)chart.init();
-			    });
+                });
+                $("#cm-button-growth").on('click', function(e, val){
+                	chart.showData(1);
+                	chart.hideData(0);
+                });
+                $("#cm-button-nogrowth").on('click', function(e, val){
+                	chart.showData(0);
+                	chart.hideData(1);
+                });
+                $("#cm-button-all").on('click', function(e, val){
+                	chart.showData(0);
+                	chart.showData(1);
+                });
 			    if( PolynomialModel.hasModel() ){
-	                $("#cm-button-aw").click(update_aw);
-	                $("#cm-button-ph").click(update_ph);
+	                $("#cm-button-aw").click(update_ph);
+	                $("#cm-button-ph").click(update_aw);
 	                update_ph();
-	                update_aw();
 			    }else{
                 	$("#slider-row-aw").hide();
                 	$("#slider-row-ph").hide();

@@ -9,6 +9,7 @@ var CultureMediumChart = function (arg) {
         this.axisx = arg.axisx;
         this.axisy = arg.axisy;
         this.constValue = arg.constValue;
+        this.constError = arg.constError;
         this.id = arg.id;
         this.indexDataPath = arg.indexDataPath;
         this.growthCurveChart = arg.growthCurveChart;
@@ -23,6 +24,7 @@ CultureMediumChart.prototype = {
     axisy: CMAxis_pH,
     axisFontSize: 9.0,
     constValue: 0.0,
+    constError: 0.5,
     MainColorSet: [
             0x4C00FFFF, 0x4900FFFF, 0x4500FFFF, 0x4200FFFF, 0x3E00FFFF, 0x3B00FFFF,
             0x3700FFFF, 0x3300FFFF, 0x3000FFFF, 0x2C00FFFF, 0x2800FFFF, 0x2500FFFF,
@@ -408,6 +410,13 @@ CultureMediumChart.prototype = {
                 if (self.axisy == CMAxis_Temp) { gety = function (data) { return data.Temp; }; }
                 else if (self.axisy == CMAxis_aw) { gety = function (data) { return data.aw; }; }
                 else if (self.axisy == CMAxis_pH) { gety = function (data) { return data.pH; }; }
+                var getc;
+				if (self.axisx == CMAxis_Temp && self.axisy == CMAxis_aw) { getc = function (data) { return data.pH; }; }
+				else if (self.axisx == CMAxis_Temp && self.axisy == CMAxis_pH) { getc = function (data) { return data.aw; }; }
+				else if (self.axisx == CMAxis_aw && self.axisy == CMAxis_Temp) { getc = function (data) { return data.pH; }; }
+				else if (self.axisx == CMAxis_aw && self.axisy == CMAxis_pH) { getc = function (data) { return data.Temp; }; }
+				else if (self.axisx == CMAxis_pH && self.axisy == CMAxis_Temp) { getc = function (data) { return data.aw; }; }
+				else if (self.axisx == CMAxis_pH && self.axisy == CMAxis_aw) { getc = function (data) { return data.Temp; }; }
 
                 var count = rawData.length;
                 var records = rawData;
@@ -420,15 +429,22 @@ CultureMediumChart.prototype = {
                         aw: records[i][4],
                         spec_rate: parseFloat(records[i][5])
                     };
+                    
                     var y = ch - (ch * (gety(item) - rangey.min) / (rangey.max - rangey.min));
                     var x = cw * (getx(item) - rangex.min) / (rangex.max - rangex.min);
-
-		             var data = [parseFloat(getx(item)), parseFloat(gety(item))];
-		             if( item.spec_rate < 0  ) {
-		             	op.series[0].data.push(data);
-		             }else{
-		             	op.series[1].data.push(data);
-		             }
+                    var c = parseFloat(getc(item));
+                    var c_min = self.constValue - self.constError;
+                    var c_max = self.constValue + self.constError;
+                    
+                    if( c_min <= c && c <= c_max )
+                    {
+			             var data = [parseFloat(getx(item)), parseFloat(gety(item))];
+			             if( item.spec_rate < 0  ) {
+			             	op.series[0].data.push(data);
+			             }else{
+			             	op.series[1].data.push(data);
+			             }
+			         }
                 }
                 
 				Status.DataSet = rawData;
@@ -437,6 +453,18 @@ CultureMediumChart.prototype = {
             }
         });
     },
+    hideData: function(index) {
+		var series = this.scatter.series[index];
+        if (series.visible) {
+            series.hide();
+    	}
+	},
+    showData: function(index) {
+		var series = this.scatter.series[index];
+        if (!series.visible) {
+            series.show();
+    	}
+	},
     init: function() {
 		var self = this;
     	var f = this.model.hasModel();
