@@ -335,16 +335,13 @@ var Screen = {
                 	if(init)chart.init();
                 });
                 $("#cm-button-growth").on('click', function(e, val){
-                	chart.showData(1);
-                	chart.hideData(0);
+                	chart.setPlotMode(CMPlot_Growth);
                 });
                 $("#cm-button-nogrowth").on('click', function(e, val){
-                	chart.showData(0);
-                	chart.hideData(1);
+                	chart.setPlotMode(CMPlot_Nogrowth);
                 });
                 $("#cm-button-all").on('click', function(e, val){
-                	chart.showData(0);
-                	chart.showData(1);
+                	chart.setPlotMode(CMPlot_Both);
                 });
 			    if( PolynomialModel.hasModel() ){
 	                $("#cm-button-aw").click(update_ph);

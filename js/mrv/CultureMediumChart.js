@@ -1,6 +1,9 @@
 ﻿var CMAxis_Temp = 1;
 var CMAxis_aw = 2;
 var CMAxis_pH = 3;
+var CMPlot_Both = 1;
+var CMPlot_Growth = 2;
+var CMPlot_Nogrowth = 3;
 
 var CultureMediumChart = function (arg) {
     if (arg != undefined) {
@@ -10,6 +13,7 @@ var CultureMediumChart = function (arg) {
         this.axisy = arg.axisy;
         this.constValue = arg.constValue;
         this.constError = arg.constError;
+        this.plotMode = arg.plotMode;
         this.id = arg.id;
         this.indexDataPath = arg.indexDataPath;
         this.growthCurveChart = arg.growthCurveChart;
@@ -23,6 +27,7 @@ CultureMediumChart.prototype = {
     axisx: CMAxis_Temp,
     axisy: CMAxis_pH,
     axisFontSize: 9.0,
+    plotMode: CMPlot_Both,
     constValue: 0.0,
     constError: 0.5,
     MainColorSet: [
@@ -447,12 +452,36 @@ CultureMediumChart.prototype = {
 			         }
                 }
                 
+                //visibility
+                if( self.plotMode == CMPlot_Growth ){
+                	//set no growth data series visible false 
+                	op.series[0].visible = false;
+                }
+                else if( self.plotMode == CMPlot_Nogrowth ){
+                	//set growth data series visible false 
+                	op.series[1].visible = false;
+                }
+                
 				Status.DataSet = rawData;
 
                 callback(op);
             }
         });
     },
+    setPlotMode: function(plotMode) {
+    	this.plotMode = plotMode;
+    	if( plotMode == CMPlot_Growth ) {
+    		this.hideData(0);
+    		this.showData(1);
+	    }
+    	else if( plotMode == CMPlot_Nogrowth ) {
+    		this.showData(0);
+    		this.hideData(1);
+	    }else{
+    		this.showData(0);
+    		this.showData(1);
+	    }
+	},
     hideData: function(index) {
 		var series = this.scatter.series[index];
         if (series.visible) {
