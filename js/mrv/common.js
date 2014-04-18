@@ -296,20 +296,29 @@ var Screen = {
                     }
                 });
                 var init = false;
+                var getConst = function(ele){
+                	return {
+	                	value: parseFloat(ele.attr('data-param')),
+	                	min: parseFloat(ele.attr('data-min')),
+	                	max: parseFloat(ele.attr('data-max'))
+		            };
+	            };
                 var get_ph = function(){
-                	var val = parseFloat($('button.phbtn.active').attr('data-param'));
-                	if( isNaN(val) ) return 5;
-                	return val;
+                	var ele = $('button.phbtn.active');
+                	return getConst(ele);
                 };
                 var get_aw = function(){
-                	var val = parseFloat($('button.awbtn.active').attr('data-param'));
-                	if( isNaN(val) ) return 1;
-                	return val;
+                	var ele = $('button.awbtn.active');
+                	return getConst(ele);
                 };
+                var setConst = function(constSet){
+                	chart.constValue = constSet.value;
+                	chart.constMin = constSet.min;
+                	chart.constMax = constSet.max;
+	            };
                 var update_ph = function(){
                 	chart.axisy = CMAxis_aw;
-                	chart.constValue = get_ph();
-                	chart.constError = 0.5;
+                	setConst(get_ph());
                 	console.log('set pH to ' + chart.constValue);
                 	if(init)chart.init();
                 	$("#slider-row-aw").hide();
@@ -317,20 +326,19 @@ var Screen = {
                 };
                 var update_aw = function(){
                 	chart.axisy = CMAxis_pH;
-                	chart.constValue = get_aw();
-                	chart.constError = 0.05;
+                	setConst(get_aw());
                 	console.log('set aw to ' + chart.constValue);
                 	if(init)chart.init();
                 	$("#slider-row-aw").show();
                 	$("#slider-row-ph").hide();
                 };
                 $("button.awbtn").on('click',function(e, val){
-                	chart.constValue = parseFloat($(e.target).attr('data-param'));
+                	setConst(getConst($(e.target)));
                 	console.log('set aw to ' + chart.constValue);
                 	if(init)chart.init();
                 });
                 $("button.phbtn").on('click',function(e, val){
-                	chart.constValue = parseFloat($(e.target).attr('data-param'));
+                	setConst(getConst($(e.target)));
                 	console.log('set pH to ' + chart.constValue);
                 	if(init)chart.init();
                 });
